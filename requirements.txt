@@ -4,3 +4,7 @@ transformers
 accelerate
 pillow
 numpy
+fastapi
+uvicorn
+python-multipart
+pyyaml
