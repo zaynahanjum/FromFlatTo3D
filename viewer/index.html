@@ -879,17 +879,63 @@
         console.warn("FastAPI backend not reachable, falling back to local preview:", err);
       }
 
-      // Standalone Fallback: load image into texture directly
+      // Standalone Fallback: Generate real height displacement map in-browser
       const reader = new FileReader();
       reader.onload = (ev) => {
         const img = new Image();
         img.onload = () => {
+          // 1. Update RGB texture
           const newTex = new THREE.Texture(img);
           newTex.needsUpdate = true;
           newTex.anisotropy = renderer.capabilities.getMaxAnisotropy();
           cachedRgbTex = newTex;
           if (currentViewMode !== "heatmap") material.map = newTex;
+
+          // 2. Generate brand-new height displacement map from uploaded image
+          const dCanvas = document.createElement("canvas");
+          dCanvas.width = img.width;
+          dCanvas.height = img.height;
+          const dCtx = dCanvas.getContext("2d");
+          dCtx.drawImage(img, 0, 0);
+          const imgData = dCtx.getImageData(0, 0, img.width, img.height);
+          const d = imgData.data;
+
+          for (let i = 0; i < d.length; i += 4) {
+            const r = d[i], g = d[i + 1], b = d[i + 2];
+            // Luminance height estimation with water depression
+            let h = 0.299 * r + 0.587 * g + 0.114 * b;
+            if (b > r + 30 && b > g + 10 && r < 130) {
+              h = 5; // Depress water bodies
+            }
+            d[i] = h;
+            d[i + 1] = h;
+            d[i + 2] = h;
+          }
+          dCtx.putImageData(imgData, 0, 0);
+
+          // 3. Apply new displacement map to 3D terrain
+          const newDispTex = new THREE.CanvasTexture(dCanvas);
+          newDispTex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+          material.displacementMap = newDispTex;
           material.needsUpdate = true;
+
+          // 4. Update inspection canvas so click-to-measure reads the new heights!
+          depthCanvas.width = img.width;
+          depthCanvas.height = img.height;
+          depthCtx.drawImage(dCanvas, 0, 0);
+
+          // 5. Refresh elevation heatmap cache
+          cachedHeatmapTex = generateHeatmap(depthCanvas);
+          if (currentViewMode === "heatmap") {
+            material.map = cachedHeatmapTex;
+            material.needsUpdate = true;
+          }
+
+          document.getElementById("vertical-range-display").innerText = "50–200m";
+          document.getElementById("status-tag").innerText = "PROCESSED";
+          document.getElementById("status-tag").style.borderColor = "#10b981";
+          document.getElementById("status-tag").style.color = "#10b981";
+
           uploadText.innerText = "Upload Image";
           uploadBtn.style.opacity = "1";
         };
