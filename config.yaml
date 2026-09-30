@@ -10,6 +10,11 @@ image:
   raw_dir: "data/raw"
   viewer_dir: "viewer/public"
 
+tiling:
+  tile_size: 512
+  overlap: 64
+  blend_method: "linear"
+
 calibration:
   default_base_elevation_m: 50.0
   default_max_height_range_m: 150.0
