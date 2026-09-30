@@ -411,128 +411,87 @@
       display: flex;
       opacity: 1;
     }
-    .loading-modal {
-      width: 380px;
-      background: #181920;
-      border: 1px solid rgba(139, 92, 246, 0.3);
-      border-radius: 24px;
-      padding: 32px 28px;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(139, 92, 246, 0.15);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-    }
-    .spinner-box {
-      position: relative;
-      width: 72px;
-      height: 72px;
-      margin-bottom: 20px;
+    .loading-pill {
+      background: rgba(22, 23, 29, 0.88);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 9999px;
+      padding: 14px 28px 14px 20px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 25px rgba(139, 92, 246, 0.15);
       display: flex;
       align-items: center;
-      justify-content: center;
+      gap: 16px;
+      transform: scale(0.96);
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .pulse-glow {
-      position: absolute;
-      width: 100%;
-      height: 100%;
+    #loading-overlay.show .loading-pill {
+      transform: scale(1);
+    }
+    .minimal-spinner {
+      width: 22px;
+      height: 22px;
       border-radius: 50%;
-      background: rgba(139, 92, 246, 0.25);
-      animation: pulseAnim 2s infinite ease-out;
+      border: 2px solid rgba(139, 92, 246, 0.2);
+      border-top-color: #c084fc;
+      border-right-color: #8b5cf6;
+      animation: sleekSpin 0.75s linear infinite;
+      flex-shrink: 0;
     }
-    .spin-ring {
-      position: absolute;
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      border: 3px solid transparent;
-      border-top-color: #8b5cf6;
-      border-right-color: #c084fc;
-      animation: spinAnim 1s linear infinite;
-    }
-    .spin-core {
-      font-size: 13px;
-      font-weight: 800;
-      color: #ffffff;
-      letter-spacing: -0.02em;
-    }
-    @keyframes spinAnim {
+    @keyframes sleekSpin {
       100% { transform: rotate(360deg); }
     }
-    @keyframes pulseAnim {
-      0% { transform: scale(0.85); opacity: 0.8; }
-      50% { transform: scale(1.25); opacity: 0.15; }
-      100% { transform: scale(0.85); opacity: 0.8; }
-    }
-    .modal-title {
-      font-size: 17px;
-      font-weight: 700;
-      color: #ffffff;
-      margin-bottom: 6px;
-    }
-    .modal-sub {
-      font-size: 12px;
-      color: #94a3b8;
-      line-height: 1.5;
-      margin-bottom: 20px;
-    }
-    .process-steps {
-      width: 100%;
+    .loading-text-group {
       display: flex;
       flex-direction: column;
-      gap: 10px;
       text-align: left;
-      background: rgba(255, 255, 255, 0.03);
-      border-radius: 12px;
-      padding: 14px;
-      border: 1px solid rgba(255, 255, 255, 0.05);
     }
-    .step-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 11px;
-      color: #64748b;
-    }
-    .step-item.active {
-      color: #e2e8f0;
+    .loading-main-text {
+      font-size: 13px;
       font-weight: 600;
+      color: #f8fafc;
+      letter-spacing: -0.01em;
     }
-    .step-item.active .step-dot {
-      background: #8b5cf6;
-      box-shadow: 0 0 8px #8b5cf6;
-    }
-    .step-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: #475569;
-      transition: all 0.3s;
-    }
-    .modal-error-box {
-      display: none;
-      margin-top: 14px;
-      padding: 10px 14px;
-      background: rgba(239, 68, 68, 0.15);
-      border: 1px solid rgba(239, 68, 68, 0.35);
-      border-radius: 10px;
+    .loading-sub-text {
       font-size: 11px;
-      color: #fca5a5;
-      text-align: left;
+      color: #94a3b8;
+      font-weight: 400;
+      margin-top: 1px;
     }
-    .modal-dismiss-btn {
+    .error-pill {
       display: none;
-      margin-top: 14px;
+      background: rgba(26, 20, 24, 0.95);
+      border: 1px solid rgba(239, 68, 68, 0.35);
+      border-radius: 20px;
+      padding: 20px 26px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      max-width: 360px;
+      text-align: center;
+    }
+    .error-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #fca5a5;
+    }
+    .error-code {
+      font-size: 11px;
+      color: #cbd5e1;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-family: monospace;
+    }
+    .error-dismiss {
       background: #374151;
       border: none;
       color: #ffffff;
-      padding: 7px 18px;
+      padding: 6px 16px;
       border-radius: 9999px;
       font-size: 11px;
-      font-weight: 600;
       cursor: pointer;
     }
-    .modal-dismiss-btn:hover { background: #4b5563; }
+    .error-dismiss:hover { background: #4b5563; }
   </style>
 
   <script type="importmap">
@@ -552,32 +511,19 @@
   <!-- Hidden File Input for Image Upload -->
   <input type="file" id="file-input" accept="image/*,.tif,.tiff" style="display:none;">
 
-  <!-- Centered AI Processing Overlay with Loading Animation -->
+  <!-- Centered Minimal Sleek Loading Overlay -->
   <div id="loading-overlay">
-    <div class="loading-modal">
-      <div class="spinner-box">
-        <div class="pulse-glow"></div>
-        <div class="spin-ring"></div>
-        <div class="spin-core">3D</div>
+    <div class="loading-pill" id="loading-pill">
+      <div class="minimal-spinner"></div>
+      <div class="loading-text-group">
+        <div class="loading-main-text" id="load-main">Generating 3D mesh...</div>
+        <div class="loading-sub-text" id="load-sub">Estimating depth & elevation</div>
       </div>
-      <div class="modal-title" id="modal-title">Generating 3D Terrain</div>
-      <div class="modal-sub" id="modal-sub">Depth Anything V2 Monocular Depth Model & Metric Surface Calibration</div>
-      <div class="process-steps" id="process-steps">
-        <div class="step-item active" id="st-1">
-          <span class="step-dot"></span>
-          <span>Uploading image & inspecting geospatial bounds</span>
-        </div>
-        <div class="step-item" id="st-2">
-          <span class="step-dot"></span>
-          <span>Vision Transformer estimating relative depth</span>
-        </div>
-        <div class="step-item" id="st-3">
-          <span class="step-dot"></span>
-          <span>Calibrating metric DSM & building 3D mesh</span>
-        </div>
-      </div>
-      <div class="modal-error-box" id="modal-error"></div>
-      <button class="modal-dismiss-btn" id="modal-dismiss-btn">Dismiss</button>
+    </div>
+    <div class="error-pill" id="error-pill">
+      <div class="error-title">AI Server Not Detected</div>
+      <div class="error-code">uvicorn src.api:app --reload --port 8000</div>
+      <button class="error-dismiss" id="error-dismiss-btn">Dismiss</button>
     </div>
   </div>
 
@@ -1062,44 +1008,39 @@
     const modalError = document.getElementById("modal-error");
     const modalDismissBtn = document.getElementById("modal-dismiss-btn");
 
+    const loadingPill = document.getElementById("loading-pill");
+    const errorPill = document.getElementById("error-pill");
+    const errorDismissBtn = document.getElementById("error-dismiss-btn");
+    const loadMain = document.getElementById("load-main");
+    const loadSub = document.getElementById("load-sub");
+
     uploadBtn.addEventListener("click", () => fileInput.click());
 
-    modalDismissBtn.addEventListener("click", () => {
+    errorDismissBtn.addEventListener("click", () => {
       loadingOverlay.classList.remove("show");
-      modalError.style.display = "none";
-      modalDismissBtn.style.display = "none";
+      errorPill.style.display = "none";
+      loadingPill.style.display = "flex";
     });
 
     fileInput.addEventListener("change", async (e) => {
       const file = e.target.files[0];
       if (!file) return;
 
-      // Show Centered Processing Overlay
-      modalError.style.display = "none";
-      modalDismissBtn.style.display = "none";
-      document.getElementById("process-steps").style.display = "flex";
-      document.getElementById("modal-title").innerText = "Generating 3D Terrain";
-      document.getElementById("modal-sub").innerText = "Depth Anything V2 Monocular Depth Model & Metric Surface Calibration";
-      
-      const st1 = document.getElementById("st-1");
-      const st2 = document.getElementById("st-2");
-      const st3 = document.getElementById("st-3");
-
-      st1.className = "step-item active";
-      st2.className = "step-item";
-      st3.className = "step-item";
-
+      // Show Minimal Sleek Loading Pill
+      errorPill.style.display = "none";
+      loadingPill.style.display = "flex";
+      loadMain.innerText = "Generating 3D mesh...";
+      loadSub.innerText = "Estimating depth & elevation";
       loadingOverlay.classList.add("show");
 
       try {
         const formData = new FormData();
         formData.append("file", file);
 
-        // Step 2 timer feedback
+        // Subtle subtext progression
         setTimeout(() => {
-          st1.className = "step-item";
-          st2.className = "step-item active";
-        }, 1200);
+          loadSub.innerText = "Reconstructing metric elevation...";
+        }, 1500);
 
         // Post to FastAPI backend
         const res = await fetch("http://127.0.0.1:8000/process", {
@@ -1108,11 +1049,8 @@
         });
 
         if (!res.ok) {
-          throw new Error(`Server returned HTTP ${res.status}: ${res.statusText}`);
+          throw new Error(`Server returned HTTP ${res.status}`);
         }
-
-        st2.className = "step-item";
-        st3.className = "step-item active";
 
         const data = await res.json();
         console.log("[Flat to 3D] AI Pipeline Output:", data);
@@ -1126,23 +1064,15 @@
         // Load generated RGB texture & depth map
         loadModelTextures(data.texture_url, data.displacement_url);
 
-        // Smoothly fade out loading overlay
+        // Smoothly hide loading overlay
         setTimeout(() => {
           loadingOverlay.classList.remove("show");
-        }, 500);
+        }, 400);
 
       } catch (err) {
         console.error("AI Upload Error:", err);
-        document.getElementById("modal-title").innerText = "AI Server Offline";
-        document.getElementById("modal-sub").innerText = "To generate 3D terrains using the AI depth model, start the backend:";
-        document.getElementById("process-steps").style.display = "none";
-        modalError.innerHTML = `
-          <strong>Connection Failed:</strong><br>
-          Run this in your terminal:<br>
-          <code style="display:block;margin-top:6px;padding:6px;background:rgba(0,0,0,0.4);border-radius:6px;color:#cbd5e1;">uvicorn src.api:app --reload --port 8000</code>
-        `;
-        modalError.style.display = "block";
-        modalDismissBtn.style.display = "inline-block";
+        loadingPill.style.display = "none";
+        errorPill.style.display = "flex";
       }
 
       fileInput.value = "";
