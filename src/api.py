@@ -33,7 +33,7 @@ from src.preprocess import GeoMetadata, extract_tiles, inspect_image, stitch_til
 try:
     from fastapi import FastAPI, File, Form, HTTPException, UploadFile
     from fastapi.middleware.cors import CORSMiddleware
-    from fastapi.responses import JSONResponse
+    from fastapi.responses import FileResponse, JSONResponse
     from fastapi.staticfiles import StaticFiles
 
     HAS_FASTAPI = True
@@ -167,13 +167,17 @@ if HAS_FASTAPI:
         allow_headers=["*"],
     )
 
-    # Serve static assets from viewer directory
-    viewer_path = Path("viewer")
-    if viewer_path.exists():
-        app.mount("/viewer", StaticFiles(directory="viewer", html=True), name="viewer")
+    NO_CACHE_HEADERS = {
+        "Cache-Control": "no-cache, no-store, must-revalidate",
+        "Pragma": "no-cache",
+        "Expires": "0",
+    }
 
     @app.get("/")
-    def root() -> Dict[str, str]:
+    def root():
+        app_file = Path("viewer/app.html")
+        if app_file.exists():
+            return FileResponse(app_file, headers=NO_CACHE_HEADERS)
         return {
             "service": "Flat to 3D Single-View Height Estimation API",
             "status": "online",
@@ -181,6 +185,18 @@ if HAS_FASTAPI:
             "docs": "/docs",
             "viewer": "/viewer",
         }
+
+    @app.get("/viewer")
+    @app.get("/viewer/")
+    @app.get("/viewer/index.html")
+    @app.get("/viewer/app.html")
+    def serve_viewer_app():
+        return FileResponse("viewer/app.html", headers=NO_CACHE_HEADERS)
+
+    # Serve static assets from viewer directory
+    viewer_path = Path("viewer")
+    if viewer_path.exists():
+        app.mount("/viewer", StaticFiles(directory="viewer", html=True), name="viewer")
 
     @app.get("/health")
     def health() -> Dict[str, Any]:
