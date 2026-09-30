@@ -154,7 +154,7 @@ def process_image_pipeline(
 # Initialize FastAPI application if installed
 if HAS_FASTAPI:
     app = FastAPI(
-        title="DepthWizard API",
+        title="Flat to 3D API",
         description="Single-View Satellite Height Estimation and 3D Flythrough (SIH 2026 - PS SIH26175)",
         version="1.0.0",
     )
@@ -175,7 +175,7 @@ if HAS_FASTAPI:
     @app.get("/")
     def root() -> Dict[str, str]:
         return {
-            "service": "DepthWizard Single-View Height Estimation API",
+            "service": "Flat to 3D Single-View Height Estimation API",
             "status": "online",
             "version": "1.0.0",
             "docs": "/docs",
@@ -234,7 +234,7 @@ else:
 def main() -> None:
     """CLI runner for direct pipeline execution or server launch."""
     parser = argparse.ArgumentParser(
-        description="DepthWizard Task T8: Pipeline Orchestration & API Runner."
+        description="Flat to 3D: Pipeline Orchestration & API Runner."
     )
     parser.add_argument(
         "--test",
@@ -264,7 +264,7 @@ def main() -> None:
             return
         import uvicorn
 
-        print(f"Starting DepthWizard API server at http://127.0.0.1:{args.port}...")
+        print(f"Starting Flat to 3D API server at http://127.0.0.1:{args.port}...")
         uvicorn.run("src.api:app", host="127.0.0.1", port=args.port, reload=True)
     else:
         parser.print_help()
