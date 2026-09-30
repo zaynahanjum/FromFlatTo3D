@@ -18,19 +18,18 @@
 
     /* Full-Bleed 3D Viewport */
     #viewport-container {
-      position: fixed;
+      position: absolute;
       top: 0;
       left: 0;
       width: 100vw;
       height: 100vh;
       z-index: 1;
-      display: block;
     }
 
     /* Floating Top Header Bar */
     #top-header {
       position: fixed;
-      top: 20px;
+      top: 18px;
       left: 24px;
       right: 24px;
       display: flex;
@@ -40,10 +39,10 @@
       pointer-events: none;
     }
     .header-left, .header-right {
-      pointer-events: auto;
       display: flex;
       align-items: center;
       gap: 12px;
+      pointer-events: auto;
     }
 
     .brand-badge {
@@ -51,53 +50,48 @@
       align-items: center;
       gap: 10px;
       background: rgba(26, 27, 33, 0.88);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 7px 16px 7px 10px;
+      padding: 7px 16px;
       border-radius: 9999px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
       backdrop-filter: blur(14px);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
     }
     .logo-icon {
-      width: 26px;
-      height: 26px;
-      background: #25262c;
-      border-radius: 6px;
+      width: 16px;
+      height: 16px;
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2.5px;
-      padding: 5px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2px;
     }
     .logo-dot {
-      background: #8e929b;
+      background: #c084fc;
       border-radius: 2px;
     }
     .brand-title {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 700;
-      color: #f3f4f6;
       letter-spacing: -0.01em;
+      color: #ffffff;
     }
 
-    /* Action Buttons & Mode Switch */
     .header-action-btn {
       display: flex;
       align-items: center;
       gap: 7px;
-      background: rgba(139, 92, 246, 0.18);
+      background: rgba(139, 92, 246, 0.22);
       border: 1px solid rgba(139, 92, 246, 0.45);
-      color: #c084fc;
+      color: #e9d5ff;
       font-size: 12px;
       font-weight: 600;
       padding: 7px 16px;
       border-radius: 9999px;
-      backdrop-filter: blur(14px);
       cursor: pointer;
-      transition: all 0.2s ease;
+      backdrop-filter: blur(14px);
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+      transition: all 0.2s;
     }
     .header-action-btn:hover {
-      background: rgba(139, 92, 246, 0.32);
+      background: rgba(139, 92, 246, 0.35);
       color: #ffffff;
       transform: scale(1.02);
     }
@@ -159,174 +153,197 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #cbd5e1;
+      color: #9ca3af;
       cursor: pointer;
       backdrop-filter: blur(14px);
-      transition: all 0.2s;
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+      transition: all 0.2s;
     }
     .icon-btn:hover {
-      background: #383a44;
-      color: #fff;
-      transform: scale(1.04);
-    }
-    .model-badge {
-      background: rgba(139, 92, 246, 0.15);
-      border: 1px solid rgba(139, 92, 246, 0.35);
-      color: #c084fc;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      padding: 6px 14px;
-      border-radius: 9999px;
-      text-transform: uppercase;
-      backdrop-filter: blur(10px);
+      color: #ffffff;
+      background: rgba(35, 37, 45, 0.95);
     }
 
-    /* Left Floating Live Analytics Card */
+    /* Intuitive Left Stats & Height Overview Card */
     #stats-card {
       position: fixed;
-      top: 84px;
+      top: 80px;
       left: 24px;
-      width: 295px;
-      background: rgba(26, 27, 33, 0.90);
-      border: 1px solid rgba(255, 255, 255, 0.09);
+      width: 300px;
+      background: rgba(24, 25, 31, 0.92);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 20px;
-      padding: 20px;
+      padding: 18px;
       z-index: 20;
-      backdrop-filter: blur(16px);
-      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.55);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
     }
-    .stats-header {
+    .card-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 13px;
-      font-weight: 600;
-      color: #f3f4f6;
       margin-bottom: 12px;
     }
-    .stats-badge-tag {
+    .card-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #f8fafc;
+      letter-spacing: -0.01em;
+    }
+    .status-tag {
       font-size: 10px;
-      color: #a855f7;
-      background: rgba(168, 85, 247, 0.12);
+      font-weight: 600;
+      text-transform: uppercase;
+      background: rgba(168, 85, 247, 0.18);
+      color: #c084fc;
+      border: 1px solid rgba(168, 85, 247, 0.3);
       padding: 2px 8px;
       border-radius: 9999px;
-      font-weight: 600;
-    }
-    .big-metric-label {
-      font-size: 11px;
-      color: #9ca3af;
-      margin-bottom: 2px;
-    }
-    .big-metric-val {
-      font-size: 28px;
-      font-weight: 700;
-      color: #ffffff;
-      letter-spacing: -0.03em;
-      margin-bottom: 12px;
     }
 
-    /* Live Elevation Distribution Histogram */
-    .bar-chart {
+    /* Main Prominent Feature Height */
+    .hero-stat {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 14px;
+    }
+    .hero-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #94a3b8;
+      margin-bottom: 3px;
+    }
+    .hero-value {
+      font-size: 26px;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.02em;
+    }
+    .hero-sub {
+      font-size: 11px;
+      color: #a855f7;
+      font-weight: 500;
+      margin-top: 2px;
+    }
+
+    /* Height Distribution Spectrum with Clear Labels */
+    .section-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: #cbd5e1;
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .histogram-box {
+      width: 100%;
+      height: 48px;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 8px;
+      padding: 6px 8px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
       display: flex;
       align-items: flex-end;
-      gap: 2.5px;
-      height: 64px;
-      margin-bottom: 10px;
-      padding-bottom: 4px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      gap: 3px;
+      margin-bottom: 4px;
     }
     .bar {
       flex: 1;
-      background: linear-gradient(to top, #7c3aed, #a855f7);
       border-radius: 2px 2px 0 0;
-      opacity: 0.85;
-      transition: height 0.4s ease;
-      min-height: 2px;
+      min-height: 3px;
+      transition: height 0.3s ease;
     }
-    .bar:hover {
-      opacity: 1;
-      background: #c084fc;
+    .bar-spectrum-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 9px;
+      color: #94a3b8;
+      margin-bottom: 14px;
     }
+    .bar-spectrum-labels span:first-child { color: #10b981; font-weight: 600; }
+    .bar-spectrum-labels span:nth-child(2) { color: #38bdf8; font-weight: 600; }
+    .bar-spectrum-labels span:last-child { color: #c084fc; font-weight: 600; }
 
-    /* Dynamic Elevation Tier Ratio Bar */
-    .ratio-bar {
+    /* Intuitive 3-Part Area Breakdown */
+    .area-bar {
       width: 100%;
-      height: 6px;
-      background: #374151;
+      height: 7px;
+      background: rgba(0, 0, 0, 0.4);
       border-radius: 9999px;
       overflow: hidden;
       display: flex;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
-    .ratio-segment-a {
-      width: 60%;
-      height: 100%;
-      background: #8b5cf6;
-      transition: width 0.4s ease;
-    }
-    .ratio-segment-b {
-      width: 40%;
-      height: 100%;
-      background: #a3e635;
-      transition: width 0.4s ease;
-    }
-    .ratio-labels {
-      display: flex;
-      justify-content: space-between;
-      font-size: 10px;
-      color: #9ca3af;
+    .area-seg-ground { background: #10b981; height: 100%; width: 50%; transition: width 0.3s; }
+    .area-seg-mid    { background: #38bdf8; height: 100%; width: 35%; transition: width 0.3s; }
+    .area-seg-tall   { background: #a855f7; height: 100%; width: 15%; transition: width 0.3s; }
+
+    .area-legend-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px;
+      font-size: 9.5px;
+      color: #94a3b8;
       margin-bottom: 14px;
     }
-    .ratio-label-a span { color: #8b5cf6; font-weight: 600; }
-    .ratio-label-b span { color: #a3e635; font-weight: 600; }
-
-    /* Live Terrain Stats Table */
-    .stats-table {
+    .legend-item {
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      border-top: 1px solid rgba(255, 255, 255, 0.06);
-      padding-top: 12px;
     }
-    .stats-row {
+    .legend-bullet {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .bullet-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+    .legend-val {
+      font-size: 12px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-top: 1px;
+    }
+
+    /* Plain-English Elevation Details Table */
+    .details-table {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 10px;
+    }
+    .details-row {
       display: flex;
       justify-content: space-between;
       font-size: 11px;
-      color: #cbd5e1;
+      color: #94a3b8;
     }
-    .stats-row .s-val {
+    .details-row strong {
+      color: #f1f5f9;
       font-weight: 600;
-      color: #f8fafc;
     }
 
-    /* Floating Point Inspection Callout (with slope & relief) */
+    /* Floating Point Measurement Callout Card */
     #callout-card {
-      position: fixed;
-      width: 230px;
-      background: rgba(24, 25, 30, 0.94);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 14px;
-      padding: 14px;
-      z-index: 30;
-      backdrop-filter: blur(14px);
-      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.65);
-      pointer-events: none;
-      display: none;
-      transform: translate(-50%, -120%);
-    }
-    #callout-card::after {
-      content: "";
       position: absolute;
-      bottom: -6px;
-      left: 50%;
-      transform: translateX(-50%) rotate(45deg);
-      width: 10px;
-      height: 10px;
-      background: rgba(24, 25, 30, 0.94);
-      border-right: 1px solid rgba(255, 255, 255, 0.12);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      width: 210px;
+      background: rgba(24, 25, 31, 0.96);
+      border: 1px solid rgba(168, 85, 247, 0.45);
+      border-radius: 14px;
+      padding: 12px 14px;
+      z-index: 30;
+      pointer-events: none;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 14px 32px rgba(0, 0, 0, 0.65);
+      transform: translate(-50%, -125%);
+      display: none;
+      transition: opacity 0.15s ease;
     }
     .callout-header {
       font-size: 13px;
@@ -338,25 +355,16 @@
       font-size: 11px;
       color: #c084fc;
       font-weight: 600;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
     .callout-meta {
       font-size: 10px;
       color: #94a3b8;
       display: flex;
       gap: 8px;
-      margin-bottom: 8px;
     }
     .callout-meta strong {
       color: #a3e635;
-    }
-    .wireframe-svg {
-      width: 100%;
-      height: 38px;
-      stroke: #8b5cf6;
-      stroke-width: 1.5;
-      fill: rgba(139, 92, 246, 0.12);
-      margin-top: 4px;
     }
 
     /* Bottom Intensity Legend */
@@ -386,12 +394,12 @@
       height: 10px;
       border-radius: 2px;
     }
-    .l-1 { background: #3b1d60; }
-    .l-2 { background: #6b21a8; }
-    .l-3 { background: #9333ea; }
+    .l-1 { background: #10b981; }
+    .l-2 { background: #38bdf8; }
+    .l-3 { background: #8b5cf6; }
     .l-4 { background: #c084fc; }
 
-    /* Centered AI Processing Overlay */
+    /* Ultra-Minimal Sleek Loading Overlay */
     #loading-overlay {
       position: fixed;
       top: 0;
@@ -559,143 +567,138 @@
         <span>Height Scale: <strong id="disp-val" style="color:#c084fc;">35</strong></span>
         <input id="disp-slider" type="range" min="0" max="90" value="35">
       </div>
-      <button id="reset-cam-btn" class="icon-btn" title="Reset Camera View">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
-      </button>
-      <button id="expand-btn" class="icon-btn" title="Toggle Fullscreen">↗</button>
-      <div class="model-badge" id="status-tag">AI DSM</div>
+      <button class="icon-btn" id="reset-cam-btn" title="Reset View">↺</button>
+      <button class="icon-btn" id="expand-btn" title="Toggle Fullscreen">↗</button>
     </div>
   </div>
 
-  <!-- Left Floating Live Analytics Card -->
+  <!-- Intuitive Height & Terrain Overview Dashboard (Top-Left) -->
   <div id="stats-card">
-    <div class="stats-header">
-      <span id="card-title">Elevation Profile</span>
-      <span class="stats-badge-tag" id="scene-type-tag">METRIC DSM</span>
+    <div class="card-header">
+      <span class="card-title">Height & Terrain Overview</span>
+      <span class="status-tag" id="status-tag">AI DSM</span>
     </div>
 
-    <div class="big-metric-label">Vertical elevation span:</div>
-    <div class="big-metric-val" id="vertical-range-display">50–185m</div>
-
-    <!-- Live 24-Bar Frequency Histogram -->
-    <div class="bar-chart" id="bar-chart"></div>
-
-    <!-- Dynamic Elevation Tier Ratio Bar -->
-    <div class="ratio-bar">
-      <div class="ratio-segment-a" id="ratio-seg-a"></div>
-      <div class="ratio-segment-b" id="ratio-seg-b"></div>
-    </div>
-    <div class="ratio-labels">
-      <div class="ratio-label-a"><span id="tier-a-label">Plains / Lowland</span> — <span id="tier-a-pct">64%</span></div>
-      <div class="ratio-label-b"><span id="tier-b-label">Peaks / High-Rise</span> — <span id="tier-b-pct">36%</span></div>
+    <!-- Big Intuitive Stat: Tallest Feature Above Ground -->
+    <div class="hero-stat">
+      <div class="hero-label">Tallest Structure Above Ground</div>
+      <div class="hero-value" id="hero-span">+0 m</div>
+      <div class="hero-sub" id="hero-range">Ground: 0m → Peak: 0m</div>
     </div>
 
-    <!-- Live Terrain Statistics Table -->
-    <div class="stats-table">
-      <div class="stats-row">
-        <span>Peak Elevation:</span>
-        <span class="s-val" id="stat-peak">185.0 m</span>
+    <!-- Elevation Spectrum Graph (Color-coded Ground -> Mid -> Tall) -->
+    <div class="section-label">
+      <span>Elevation Spectrum</span>
+      <span id="stat-peak-tag" style="color:#c084fc; font-weight:700;">Peak: -- m</span>
+    </div>
+    <div class="histogram-box" id="bar-chart"></div>
+    <div class="bar-spectrum-labels">
+      <span>● Flat Ground</span>
+      <span>● Mid-Rise</span>
+      <span>● Towers & Hills</span>
+    </div>
+
+    <!-- 3-Tier Plain-English Area Breakdown -->
+    <div class="section-label">Area Composition</div>
+    <div class="area-bar">
+      <div class="area-seg-ground" id="seg-ground"></div>
+      <div class="area-seg-mid" id="seg-mid"></div>
+      <div class="area-seg-tall" id="seg-tall"></div>
+    </div>
+    <div class="area-legend-grid">
+      <div class="legend-item">
+        <div class="legend-bullet"><span class="bullet-dot" style="background:#10b981;"></span> Ground</div>
+        <div class="legend-val" id="pct-ground">--%</div>
       </div>
-      <div class="stats-row">
-        <span>Ground Datum:</span>
-        <span class="s-val" id="stat-base">50.0 m</span>
+      <div class="legend-item">
+        <div class="legend-bullet"><span class="bullet-dot" style="background:#38bdf8;"></span> Mid-Rise</div>
+        <div class="legend-val" id="pct-mid">--%</div>
       </div>
-      <div class="stats-row">
-        <span>Mean Altitude:</span>
-        <span class="s-val" id="stat-mean">96.0 m</span>
+      <div class="legend-item">
+        <div class="legend-bullet"><span class="bullet-dot" style="background:#a855f7;"></span> Towers</div>
+        <div class="legend-val" id="pct-tall">--%</div>
       </div>
-      <div class="stats-row">
-        <span>Vertical Relief:</span>
-        <span class="s-val" id="stat-span">135.0 m</span>
+    </div>
+
+    <!-- Elevation Breakdown Table -->
+    <div class="details-table">
+      <div class="details-row">
+        <span>Ground Level (Base):</span>
+        <strong id="stat-base">-- m</strong>
       </div>
-      <div class="stats-row">
-        <span>AI Depth Engine:</span>
-        <span class="s-val" style="color:#a855f7;">DepthAnything-V2</span>
+      <div class="details-row">
+        <span>Average Height:</span>
+        <strong id="stat-mean">-- m</strong>
+      </div>
+      <div class="details-row">
+        <span>Highest Peak:</span>
+        <strong id="stat-peak" style="color:#c084fc;">-- m</strong>
       </div>
     </div>
   </div>
 
-  <!-- Floating Point Inspection Callout (with slope & relief) -->
+  <!-- Floating Point Measurement Callout Card -->
   <div id="callout-card">
-    <div class="callout-header" id="callout-title">185.0 m elevation</div>
-    <div class="callout-sub" id="callout-height">+135.0 m structure</div>
-    <div class="callout-meta" id="callout-slope">Slope: <strong>12.4°</strong></div>
-    <svg class="wireframe-svg" viewBox="0 0 100 30" preserveAspectRatio="none">
-      <path d="M0,28 L15,26 L28,14 L42,6 L50,4 L60,8 L75,20 L88,27 L100,28 Z"></path>
-    </svg>
+    <div class="callout-header" id="callout-title">124.5 m elevation</div>
+    <div class="callout-sub" id="callout-height">+74.5 m above ground</div>
+    <div class="callout-meta" id="callout-slope">Incline: <strong>14.2°</strong></div>
   </div>
 
   <!-- Bottom Intensity Legend -->
   <div id="bottom-legend">
-    <span>Elevation: Lower</span>
+    <span>Elevation:</span>
     <div class="legend-gradient">
-      <div class="legend-box l-1"></div>
-      <div class="legend-box l-2"></div>
-      <div class="legend-box l-3"></div>
-      <div class="legend-box l-4"></div>
+      <div class="legend-box l-1" title="Flat ground"></div>
+      <div class="legend-box l-2" title="Low / Mid buildings"></div>
+      <div class="legend-box l-3" title="Towers / Peaks"></div>
+      <div class="legend-box l-4" title="Highest summit"></div>
     </div>
-    <span>Higher</span>
+    <span>High</span>
   </div>
 
   <script type="module">
     import * as THREE from "three";
     import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-    // 1. Metric Elevation State
+    // 1. Initial State & Elevation Parameters
     let BASE_ELEVATION = 50.0;
     let MAX_HEIGHT_RANGE = 150.0;
     let currentDisplacementScale = 35.0;
     let currentViewMode = "textured";
 
-    // 2. Three.js Viewport Setup
+    // 2. Setup Three.js WebGL Scene (Zero Dark Fog)
     const container = document.getElementById("viewport-container");
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color("#121316");
+    scene.background = new THREE.Color(0x121316);
+    scene.fog = null; // No murky dark fog!
 
-    const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.5, 3000);
+    // 3. Perspective Camera
+    const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 4000);
     camera.position.set(30, 240, 310);
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
+    // 4. High-Clarity WebGL Renderer (No Dark Shadows)
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: "high-performance" });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.05;
+    renderer.toneMappingExposure = 1.25; // Bright, clear, vibrant
+    renderer.shadowMap.enabled = false;   // Disable artificial shadow multiplier
     container.appendChild(renderer.domElement);
 
+    // 5. Orbit Controls
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
-    controls.maxPolarAngle = Math.PI / 2 - 0.02;
-    controls.minDistance = 30;
-    controls.maxDistance = 850;
+    controls.maxPolarAngle = Math.PI / 2 - 0.04;
     controls.target.set(20, 10, 0);
 
-    // 3. Subtle Coordinate Floor Grid
-    const floorGrid = new THREE.GridHelper(1200, 48, 0x272733, 0x1a1a24);
-    floorGrid.position.set(20, -10.1, 0);
-    scene.add(floorGrid);
-
-    // 4. Dark Architectural Pedestal Mount
-    const pedestalGeo = new THREE.BoxGeometry(360, 20, 360);
-    const pedestalMat = new THREE.MeshStandardMaterial({
-      color: 0x16171d,
-      roughness: 0.9,
-      metalness: 0.1
-    });
-    const pedestal = new THREE.Mesh(pedestalGeo, pedestalMat);
-    pedestal.position.set(20, -10, 0);
-    pedestal.receiveShadow = true;
-    scene.add(pedestal);
-
-    // 5. Cinematic Lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1.35);
+    // High-Clarity Scene Illumination
+    const ambientLight = new THREE.AmbientLight(0xffffff, 2.2);
     scene.add(ambientLight);
 
-    const sunLight = new THREE.DirectionalLight(0xffffff, 2.2);
+    const sunLight = new THREE.DirectionalLight(0xffffff, 1.8);
     sunLight.position.set(80, 350, 120);
-    sunLight.castShadow = true;
+    sunLight.castShadow = false;
     scene.add(sunLight);
 
     // 6. Terrain Mesh & Material
@@ -707,8 +710,8 @@
 
     const geometry = new THREE.PlaneGeometry(360, 360, 384, 384);
     const material = new THREE.MeshStandardMaterial({
-      roughness: 0.78,
-      metalness: 0.15,
+      roughness: 1.0,  // Pure diffuse - no dark specular sheen
+      metalness: 0.0,
       displacementScale: currentDisplacementScale,
       wireframe: false
     });
@@ -716,10 +719,10 @@
     const terrainMesh = new THREE.Mesh(geometry, material);
     terrainMesh.rotation.x = -Math.PI / 2;
     terrainMesh.position.set(20, 0, 0);
-    terrainMesh.receiveShadow = true;
+    terrainMesh.receiveShadow = false;
     scene.add(terrainMesh);
 
-    // 7. Dynamic Elevation Distribution Analyzer (Histogram & Stats)
+    // 7. Intuitive Terrain & Height Statistics Engine
     function updateLiveAnalytics(canvas, base, span) {
       if (!canvas || canvas.width === 0 || canvas.height === 0) return;
       const ctx = canvas.getContext("2d");
@@ -743,45 +746,63 @@
         sampledCount++;
       }
 
-      // 1. Update 24-Bar Histogram DOM
+      // 1. Color-coded 24-Bar Height Spectrum Histogram
       const maxBinCount = Math.max(...bins, 1);
       const chartEl = document.getElementById("bar-chart");
       chartEl.innerHTML = "";
-      bins.forEach(count => {
+      bins.forEach((count, idx) => {
         const b = document.createElement("div");
         b.className = "bar";
-        const pct = Math.max(4, (count / maxBinCount) * 100);
+        const pct = Math.max(5, (count / maxBinCount) * 100);
         b.style.height = `${pct}%`;
+
+        // Color gradient: Emerald (Ground) -> Blue (Mid) -> Purple (Tall)
+        if (idx < 8) {
+          b.style.background = "#10b981";
+        } else if (idx < 16) {
+          b.style.background = "#38bdf8";
+        } else {
+          b.style.background = "#a855f7";
+        }
+        b.title = `Bin ${idx + 1}: ${count} samples`;
         chartEl.appendChild(b);
       });
 
-      // 2. Metrics Calculation
+      // 2. Intuitive Human Metrics Calculation
       const peakM = base + (maxVal / 255.0) * span;
       const baseM = base + (minVal / 255.0) * span;
       const meanM = base + ((sum / (sampledCount || 1)) / 255.0) * span;
-      const spanM = peakM - baseM;
+      const structSpanM = peakM - baseM;
 
-      document.getElementById("vertical-range-display").innerText = `${baseM.toFixed(0)}–${peakM.toFixed(0)}m`;
-      document.getElementById("stat-peak").innerText = `${peakM.toFixed(1)} m`;
+      document.getElementById("hero-span").innerText = `+${structSpanM.toFixed(1)} m`;
+      document.getElementById("hero-range").innerText = `Ground: ${baseM.toFixed(0)}m  →  Peak: ${peakM.toFixed(0)}m`;
+      document.getElementById("stat-peak-tag").innerText = `Peak: ${peakM.toFixed(0)} m`;
       document.getElementById("stat-base").innerText = `${baseM.toFixed(1)} m`;
       document.getElementById("stat-mean").innerText = `${meanM.toFixed(1)} m`;
-      document.getElementById("stat-span").innerText = `${spanM.toFixed(1)} m`;
+      document.getElementById("stat-peak").innerText = `${peakM.toFixed(1)} m`;
 
-      // 3. Dynamic Tier Ratio Bar
-      let lowCount = 0;
-      let highCount = 0;
+      // 3. 3-Tier Plain-English Area Composition
+      let groundCount = 0;
+      let midCount = 0;
+      let tallCount = 0;
+
       for (let i = 0; i < numBins; i++) {
-        if (i < Math.floor(numBins * 0.45)) lowCount += bins[i];
-        else highCount += bins[i];
+        if (i < 8) groundCount += bins[i];
+        else if (i < 17) midCount += bins[i];
+        else tallCount += bins[i];
       }
-      const total = lowCount + highCount || 1;
-      const lowPct = Math.round((lowCount / total) * 100);
-      const highPct = 100 - lowPct;
+      const total = groundCount + midCount + tallCount || 1;
+      const groundPct = Math.round((groundCount / total) * 100);
+      const midPct = Math.round((midCount / total) * 100);
+      const tallPct = Math.max(0, 100 - (groundPct + midPct));
 
-      document.getElementById("ratio-seg-a").style.width = `${lowPct}%`;
-      document.getElementById("ratio-seg-b").style.width = `${highPct}%`;
-      document.getElementById("tier-a-pct").innerText = `${lowPct}%`;
-      document.getElementById("tier-b-pct").innerText = `${highPct}%`;
+      document.getElementById("seg-ground").style.width = `${groundPct}%`;
+      document.getElementById("seg-mid").style.width = `${midPct}%`;
+      document.getElementById("seg-tall").style.width = `${tallPct}%`;
+
+      document.getElementById("pct-ground").innerText = `${groundPct}%`;
+      document.getElementById("pct-mid").innerText = `${midPct}%`;
+      document.getElementById("pct-tall").innerText = `${tallPct}%`;
     }
 
     // 8. Elevation Heatmap Texture Generator
@@ -801,28 +822,28 @@
       const d = imgData.data;
 
       for (let i = 0; i < srcData.length; i += 4) {
-        const t = srcData[i] / 255.0; // 0..1 elevation
+        const t = srcData[i] / 255.0;
         let r, g, b;
         if (t < 0.25) {
           const k = t / 0.25;
-          r = Math.floor(40 + k * 20);
-          g = Math.floor(20 + k * 80);
-          b = Math.floor(120 + k * 135);
+          r = Math.floor(16 + k * 30);
+          g = Math.floor(185 - k * 30);
+          b = Math.floor(129 + k * 80);
         } else if (t < 0.5) {
           const k = (t - 0.25) / 0.25;
-          r = Math.floor(60 + k * 20);
-          g = Math.floor(100 + k * 120);
-          b = Math.floor(255 - k * 155);
+          r = Math.floor(46 + k * 10);
+          g = Math.floor(155 - k * 35);
+          b = Math.floor(209 + k * 40);
         } else if (t < 0.75) {
           const k = (t - 0.5) / 0.25;
-          r = Math.floor(80 + k * 160);
-          g = Math.floor(220 + k * 35);
-          b = Math.floor(100 - k * 80);
+          r = Math.floor(56 + k * 110);
+          g = Math.floor(120 - k * 40);
+          b = Math.floor(249 - k * 30);
         } else {
           const k = (t - 0.75) / 0.25;
-          r = Math.floor(240 + k * 15);
-          g = Math.floor(255 - k * 150);
-          b = Math.floor(20 + k * 20);
+          r = Math.floor(166 + k * 74);
+          g = Math.floor(80 + k * 52);
+          b = Math.floor(219 + k * 33);
         }
         d[i] = r;
         d[i + 1] = g;
@@ -850,7 +871,7 @@
           cachedHeatmapTex = generateHeatmap(depthCanvas);
         }
         material.map = cachedHeatmapTex || cachedRgbTex;
-      } else { // textured
+      } else {
         material.wireframe = false;
         material.map = cachedRgbTex;
       }
@@ -861,8 +882,25 @@
       btn.addEventListener("click", () => applyViewMode(btn.dataset.mode));
     });
 
-    // 9. Load Terrain Model & Setup Textures
+    // 9. Measurement Marker & Floating Callout Card
+    const clickPin = new THREE.Mesh(
+      new THREE.SphereGeometry(4.5, 32, 32),
+      new THREE.MeshStandardMaterial({ color: 0xa855f7, emissive: 0x9333ea, emissiveIntensity: 1.4 })
+    );
+    clickPin.visible = false;
+    scene.add(clickPin);
+
+    const callout = document.getElementById("callout-card");
+
+    function hideMeasurement() {
+      if (clickPin) clickPin.visible = false;
+      if (callout) callout.style.display = "none";
+    }
+
+    // 10. Load Terrain Model & Setup Textures
     function loadModelTextures(rgbUrl, depthUrl) {
+      hideMeasurement();
+
       textureLoader.load(rgbUrl, (tex) => {
         tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
         tex.generateMipmaps = true;
@@ -887,7 +925,6 @@
           material.needsUpdate = true;
         }
 
-        // Dynamically compute real live analytics from the loaded depth map!
         updateLiveAnalytics(depthCanvas, BASE_ELEVATION, MAX_HEIGHT_RANGE);
       });
     }
@@ -895,16 +932,7 @@
     // Initial load with default sample city
     loadModelTextures("public/sample_city_rgb.png", "public/sample_city_depth.png");
 
-    // 10. Single Clean Click Pin Marker
-    const clickPin = new THREE.Mesh(
-      new THREE.SphereGeometry(4.5, 32, 32),
-      new THREE.MeshStandardMaterial({ color: 0xa855f7, emissive: 0x9333ea, emissiveIntensity: 1.4 })
-    );
-    clickPin.visible = false;
-    scene.add(clickPin);
-
-    // 11. Click-to-Measure Elevation & Slope (Task T10)
-    const callout = document.getElementById("callout-card");
+    // 11. Click-to-Measure Elevation & Slope (with Outside-Click Dismiss)
     const raycaster = new THREE.Raycaster();
     const mouse = new THREE.Vector2();
 
@@ -970,8 +998,11 @@
         callout.style.display = "block";
 
         document.getElementById("callout-title").innerText = `${totalElev.toFixed(1)} m elevation`;
-        document.getElementById("callout-height").innerText = `+${structHeight.toFixed(1)} m structure`;
-        document.getElementById("callout-slope").innerHTML = `Slope: <strong>${slopeDeg.toFixed(1)}°</strong>`;
+        document.getElementById("callout-height").innerText = `+${structHeight.toFixed(1)} m above ground`;
+        document.getElementById("callout-slope").innerHTML = `Incline: <strong>${slopeDeg.toFixed(1)}°</strong>`;
+      } else {
+        // Clicked outside the terrain mesh / map
+        hideMeasurement();
       }
     });
 
@@ -1001,18 +1032,13 @@
       expandBtn.innerText = document.fullscreenElement ? "↙" : "↗";
     });
 
-    // 13. Centered AI Processing Modal & Mandatory AI Model Upload
+    // 13. Minimal Sleek AI Processing & Mandatory AI Model Upload
     const fileInput = document.getElementById("file-input");
     const uploadBtn = document.getElementById("upload-btn");
     const loadingOverlay = document.getElementById("loading-overlay");
-    const modalError = document.getElementById("modal-error");
-    const modalDismissBtn = document.getElementById("modal-dismiss-btn");
-
     const loadingPill = document.getElementById("loading-pill");
     const errorPill = document.getElementById("error-pill");
     const errorDismissBtn = document.getElementById("error-dismiss-btn");
-    const loadMain = document.getElementById("load-main");
-    const loadSub = document.getElementById("load-sub");
 
     uploadBtn.addEventListener("click", () => fileInput.click());
 
@@ -1026,30 +1052,24 @@
       const file = e.target.files[0];
       if (!file) return;
 
+      hideMeasurement();
+
       // Show Minimal Sleek Loading Pill
       errorPill.style.display = "none";
       loadingPill.style.display = "flex";
-      loadMain.innerText = "Generating 3D mesh...";
-      loadSub.innerText = "Estimating depth & elevation";
       loadingOverlay.classList.add("show");
 
       try {
         const formData = new FormData();
         formData.append("file", file);
 
-        // Subtle subtext progression
-        setTimeout(() => {
-          loadSub.innerText = "Reconstructing metric elevation...";
-        }, 1500);
-
-        // Post to FastAPI backend
         const res = await fetch("http://127.0.0.1:8000/process", {
           method: "POST",
           body: formData,
         });
 
         if (!res.ok) {
-          throw new Error(`Server returned HTTP ${res.status}`);
+          throw new Error(`Server returned HTTP ${res.status}: ${res.statusText}`);
         }
 
         const data = await res.json();
@@ -1061,10 +1081,8 @@
           document.getElementById("status-tag").innerText = data.mode || "AI DSM";
         }
 
-        // Load generated RGB texture & depth map
         loadModelTextures(data.texture_url, data.displacement_url);
 
-        // Smoothly hide loading overlay
         setTimeout(() => {
           loadingOverlay.classList.remove("show");
         }, 400);
