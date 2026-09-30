@@ -1,0 +1,25 @@
+# DepthWizard Central Configuration
+# Single-View Satellite Height Estimation & 3D Flythrough
+
+model:
+  name: "depth-anything/Depth-Anything-V2-Small-hf"
+  device: "auto" # "auto", "cuda", or "cpu"
+
+image:
+  tile_size: 768
+  raw_dir: "data/raw"
+  viewer_dir: "viewer/public"
+
+calibration:
+  default_base_elevation_m: 50.0
+  default_max_height_range_m: 150.0
+  default_displacement_scale: 35.0
+  water_mask:
+    enabled: true
+    min_blue_diff: 35
+    max_red: 120
+
+server:
+  host: "127.0.0.1"
+  port: 8000
+  viewer_dir: "viewer"

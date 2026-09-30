@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flat to 3D</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background-color: #121316;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", Helvetica, Arial, sans-serif;
+      color: #e2e8f0;
+      user-select: none;
+    }
+
+    /* Full-Bleed 3D Viewport */
+    #viewport-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 1;
+      display: block;
+    }
+
+    /* Floating Top Header Bar */
+    #top-header {
+      position: fixed;
+      top: 20px;
+      left: 24px;
+      right: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 20;
+      pointer-events: none;
+    }
+    .header-left, .header-right {
+      pointer-events: auto;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-badge {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(26, 27, 33, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 7px 16px 7px 10px;
+      border-radius: 9999px;
+      backdrop-filter: blur(14px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
+    .logo-icon {
+      width: 26px;
+      height: 26px;
+      background: #25262c;
+      border-radius: 6px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5px;
+      padding: 5px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .logo-dot {
+      background: #8e929b;
+      border-radius: 2px;
+    }
+    .brand-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #f3f4f6;
+      letter-spacing: -0.01em;
+    }
+    .brand-title span {
+      color: #6b7280;
+      font-weight: 400;
+    }
+
+    .header-control {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(26, 27, 33, 0.85);
+      padding: 7px 16px;
+      border-radius: 9999px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 12px;
+      color: #cbd5e1;
+      backdrop-filter: blur(14px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    }
+    .header-control input[type="range"] {
+      width: 90px;
+      accent-color: #8b5cf6;
+      cursor: pointer;
+    }
+    .icon-btn {
+      width: 38px;
+      height: 38px;
+      background: rgba(26, 27, 33, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #cbd5e1;
+      cursor: pointer;
+      backdrop-filter: blur(14px);
+      transition: all 0.2s;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    }
+    .icon-btn:hover {
+      background: #383a44;
+      color: #fff;
+      transform: scale(1.04);
+    }
+    .demo-tag {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.35);
+      color: #ef4444;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      padding: 5px 12px;
+      border-radius: 9999px;
+      text-transform: uppercase;
+      backdrop-filter: blur(10px);
+    }
+
+    /* Left Floating Analytics Card */
+    #stats-card {
+      position: fixed;
+      top: 84px;
+      left: 24px;
+      width: 290px;
+      background: rgba(26, 27, 33, 0.88);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 20px;
+      z-index: 20;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
+    }
+    .stats-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+      font-weight: 600;
+      color: #f3f4f6;
+      margin-bottom: 12px;
+    }
+    .dots-menu {
+      color: #6b7280;
+      cursor: pointer;
+    }
+    .big-metric-label {
+      font-size: 11px;
+      color: #9ca3af;
+      margin-bottom: 2px;
+    }
+    .big-metric-val {
+      font-size: 32px;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: -0.03em;
+      margin-bottom: 14px;
+    }
+
+    /* Vertical Frequency Bar Chart */
+    .bar-chart {
+      display: flex;
+      align-items: flex-end;
+      gap: 3px;
+      height: 60px;
+      margin-bottom: 12px;
+      padding-bottom: 4px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .bar {
+      flex: 1;
+      background: linear-gradient(to top, #7c3aed, #a855f7);
+      border-radius: 2px 2px 0 0;
+      opacity: 0.85;
+      transition: height 0.3s ease;
+    }
+    .bar:hover {
+      opacity: 1;
+      background: #c084fc;
+    }
+
+    /* Dual Segment Ratio Bar */
+    .ratio-bar {
+      width: 100%;
+      height: 6px;
+      background: #374151;
+      border-radius: 9999px;
+      overflow: hidden;
+      display: flex;
+      margin-bottom: 8px;
+    }
+    .ratio-segment-a {
+      width: 68.4%;
+      height: 100%;
+      background: #8b5cf6;
+    }
+    .ratio-segment-b {
+      width: 31.6%;
+      height: 100%;
+      background: #a3e635;
+    }
+    .ratio-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      color: #9ca3af;
+      margin-bottom: 16px;
+    }
+    .ratio-label-a span { color: #8b5cf6; font-weight: 600; }
+    .ratio-label-b span { color: #a3e635; font-weight: 600; }
+
+    /* Landmark List Table */
+    .building-list {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding-top: 12px;
+    }
+    .building-item {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #cbd5e1;
+    }
+    .building-item .b-val {
+      font-weight: 600;
+      color: #f8fafc;
+    }
+
+    /* Floating Point Inspection Callout (with wireframe) */
+    #callout-card {
+      position: fixed;
+      width: 220px;
+      background: rgba(24, 25, 30, 0.94);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 14px;
+      padding: 14px;
+      z-index: 30;
+      backdrop-filter: blur(14px);
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.65);
+      pointer-events: none;
+      display: none;
+      transform: translate(-50%, -120%);
+    }
+    #callout-card::after {
+      content: "";
+      position: absolute;
+      bottom: -6px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 10px;
+      height: 10px;
+      background: rgba(24, 25, 30, 0.94);
+      border-right: 1px solid rgba(255, 255, 255, 0.12);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      transform: rotate(45deg);
+    }
+    .callout-header {
+      font-size: 13px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 2px;
+    }
+    .callout-sub {
+      font-size: 11px;
+      color: #a855f7;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .wireframe-svg {
+      width: 100%;
+      height: 45px;
+      stroke: #8b5cf6;
+      stroke-width: 1.5;
+      fill: rgba(139, 92, 246, 0.12);
+      margin-top: 4px;
+    }
+
+    /* Bottom Intensity Legend */
+    #bottom-legend {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      color: #9ca3af;
+      z-index: 20;
+      background: rgba(26, 27, 33, 0.85);
+      padding: 7px 16px;
+      border-radius: 9999px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(14px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    }
+    .legend-gradient {
+      display: flex;
+      gap: 3px;
+    }
+    .legend-box {
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+    }
+    .l-1 { background: #3b1d60; }
+    .l-2 { background: #6b21a8; }
+    .l-3 { background: #9333ea; }
+    .l-4 { background: #c084fc; }
+  </style>
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
+</head>
+<body>
+
+  <!-- Full-Screen 3D Canvas -->
+  <div id="viewport-container"></div>
+
+  <!-- Floating Top Header Bar -->
+  <div id="top-header">
+    <div class="header-left">
+      <div class="brand-badge">
+        <div class="logo-icon">
+          <div class="logo-dot"></div>
+          <div class="logo-dot" style="background:#8b5cf6;"></div>
+          <div class="logo-dot"></div>
+          <div class="logo-dot"></div>
+        </div>
+        <div class="brand-title">Flat to 3D</div>
+      </div>
+    </div>
+
+    <div class="header-right">
+      <div class="header-control">
+        <span>Height Scale: <strong id="disp-val" style="color:#c084fc;">35</strong></span>
+        <input id="disp-slider" type="range" min="0" max="90" value="35">
+      </div>
+      <button id="reset-cam-btn" class="icon-btn" title="Reset Camera View">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+      </button>
+      <button id="expand-btn" class="icon-btn" title="Toggle Fullscreen">↗</button>
+      <div class="demo-tag">DEMO</div>
+    </div>
+  </div>
+
+  <!-- Left Floating Analytics Card -->
+  <div id="stats-card">
+    <div class="stats-header">
+      <span>Building Elevation Profile</span>
+      <span class="dots-menu">•••</span>
+    </div>
+
+    <div class="big-metric-label">Structure vertical range:</div>
+    <div class="big-metric-val">10–150m</div>
+
+    <!-- Frequency Bar Chart (Violet Gradient) -->
+    <div class="bar-chart" id="bar-chart"></div>
+
+    <!-- Dual Segment Ratio Bar (Purple & Lime) -->
+    <div class="ratio-bar">
+      <div class="ratio-segment-a"></div>
+      <div class="ratio-segment-b"></div>
+    </div>
+    <div class="ratio-labels">
+      <div class="ratio-label-a"><span>High-Rise</span> — 68.4%</div>
+      <div class="ratio-label-b"><span>Low-Rise</span> — 31.6%</div>
+    </div>
+
+    <!-- Key Landmarks Table -->
+    <div class="building-list">
+      <div class="building-item">
+        <span>Central Spire Tower</span>
+        <span class="b-val">156.4 m</span>
+      </div>
+      <div class="building-item">
+        <span>Twin Office Tower A</span>
+        <span class="b-val">132.0 m</span>
+      </div>
+      <div class="building-item">
+        <span>Tech Innovation Hub</span>
+        <span class="b-val">120.0 m</span>
+      </div>
+      <div class="building-item">
+        <span>Plaza Hotel Complex</span>
+        <span class="b-val">115.0 m</span>
+      </div>
+      <div class="building-item">
+        <span>Convention Arena</span>
+        <span class="b-val">82.5 m</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Point Inspection Callout (with wireframe) -->
+  <div id="callout-card">
+    <div class="callout-header" id="callout-title">125.4 m elevation</div>
+    <div class="callout-sub" id="callout-height">+75.4 m structure height</div>
+    <svg class="wireframe-svg" viewBox="0 0 100 40">
+      <polygon points="0,40 10,32 20,35 30,18 40,24 55,5 70,22 80,12 90,30 100,40"></polygon>
+      <line x1="30" y1="18" x2="55" y2="5"></line>
+      <line x1="55" y1="5" x2="80" y2="12"></line>
+    </svg>
+  </div>
+
+  <!-- Bottom Intensity Legend -->
+  <div id="bottom-legend">
+    <span>Height: Less</span>
+    <div class="legend-gradient">
+      <div class="legend-box l-1"></div>
+      <div class="legend-box l-2"></div>
+      <div class="legend-box l-3"></div>
+      <div class="legend-box l-4"></div>
+    </div>
+    <span>More</span>
+  </div>
+
+  <script type="module">
+    import * as THREE from "three";
+    import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+    // 1. Generate Vertical Bar Chart Bars
+    const barContainer = document.getElementById("bar-chart");
+    const barHeights = [25, 45, 60, 30, 75, 88, 95, 65, 80, 50, 40, 55, 70, 85, 92, 48, 62, 78, 86, 68, 52, 74, 90, 82, 58, 42];
+    barHeights.forEach(h => {
+      const b = document.createElement("div");
+      b.className = "bar";
+      b.style.height = `${h}%`;
+      barContainer.appendChild(b);
+    });
+
+    // 2. Constants & Settings
+    const BASE_ELEVATION = 50.0;
+    const MAX_HEIGHT_RANGE = 150.0;
+    let currentDisplacementScale = 35.0;
+
+    // 3. Three.js Full-Screen Viewport Setup
+    const container = document.getElementById("viewport-container");
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x121316);
+
+    const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 8000);
+    // Position camera comfortably showing the full city
+    camera.position.set(30, 240, 310);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.shadowMap.enabled = true;
+    container.appendChild(renderer.domElement);
+
+    const maxAnisotropy = renderer.capabilities.getMaxAnisotropy();
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.05;
+    controls.target.set(20, 10, 0);
+    controls.maxPolarAngle = Math.PI / 2 - 0.02;
+
+    // 4. Pedestal & Grid Floor
+    const pedestalGeo = new THREE.BoxGeometry(360, 18, 360);
+    const pedestalMat = new THREE.MeshStandardMaterial({
+      color: 0x1a1b22,
+      roughness: 0.9,
+      metalness: 0.1
+    });
+    const pedestalMesh = new THREE.Mesh(pedestalGeo, pedestalMat);
+    pedestalMesh.position.set(20, -9.1, 0);
+    scene.add(pedestalMesh);
+
+    const floorGrid = new THREE.GridHelper(1600, 40, 0x272935, 0x181920);
+    floorGrid.position.set(20, -18.2, 0);
+    scene.add(floorGrid);
+
+    // 5. Fixed Cinematic Lighting (No sun button needed)
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.3);
+    scene.add(ambientLight);
+
+    const sunLight = new THREE.DirectionalLight(0xffffff, 2.2);
+    sunLight.position.set(80, 350, 120);
+    sunLight.castShadow = true;
+    scene.add(sunLight);
+
+    // 6. Terrain Mesh
+    const textureLoader = new THREE.TextureLoader();
+    let depthCanvas = document.createElement("canvas");
+    let depthCtx = depthCanvas.getContext("2d");
+
+    const geometry = new THREE.PlaneGeometry(360, 360, 384, 384);
+    const material = new THREE.MeshStandardMaterial({
+      roughness: 0.78,
+      metalness: 0.15,
+      displacementScale: currentDisplacementScale
+    });
+
+    const terrainMesh = new THREE.Mesh(geometry, material);
+    terrainMesh.rotation.x = -Math.PI / 2;
+    terrainMesh.position.set(20, 0, 0);
+    terrainMesh.receiveShadow = true;
+    scene.add(terrainMesh);
+
+    const rgbPath = "public/sample_city_rgb.png";
+    const depthPath = "public/sample_city_depth.png";
+
+    textureLoader.load(rgbPath, (rgbTex) => {
+      rgbTex.anisotropy = maxAnisotropy;
+      rgbTex.generateMipmaps = true;
+      material.map = rgbTex;
+      material.needsUpdate = true;
+    });
+
+    textureLoader.load(depthPath, (depthTex) => {
+      depthTex.anisotropy = maxAnisotropy;
+      material.displacementMap = depthTex;
+      material.needsUpdate = true;
+
+      const img = depthTex.image;
+      depthCanvas.width = img.width;
+      depthCanvas.height = img.height;
+      depthCtx.drawImage(img, 0, 0);
+    });
+
+    // 7. Single Clean Click Pin Marker (No scattered purple beacon dots)
+    const clickPin = new THREE.Mesh(
+      new THREE.SphereGeometry(4.5, 32, 32),
+      new THREE.MeshStandardMaterial({ color: 0xa855f7, emissive: 0x9333ea, emissiveIntensity: 1.4 })
+    );
+    clickPin.visible = false;
+    scene.add(clickPin);
+
+    const callout = document.getElementById("callout-card");
+    const raycaster = new THREE.Raycaster();
+    const mouse = new THREE.Vector2();
+
+    window.addEventListener("pointerdown", (event) => {
+      if (event.target.closest("#stats-card") || event.target.closest("#top-header") || event.target.closest("#bottom-legend")) return;
+
+      mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+      mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+      raycaster.setFromCamera(mouse, camera);
+      const intersects = raycaster.intersectObject(terrainMesh);
+
+      if (intersects.length > 0 && intersects[0].uv) {
+        const hit = intersects[0];
+        const uv = hit.uv;
+
+        let pixelVal = 128;
+        if (depthCanvas.width > 0) {
+          const px = Math.floor(uv.x * depthCanvas.width);
+          const py = Math.floor((1 - uv.y) * depthCanvas.height);
+          pixelVal = depthCtx.getImageData(px, py, 1, 1).data[0];
+        }
+
+        const relDepth = pixelVal / 255.0;
+        const structHeight = relDepth * MAX_HEIGHT_RANGE;
+        const totalElev = BASE_ELEVATION + structHeight;
+
+        // Position 3D marker
+        const displacedY = relDepth * material.displacementScale;
+        clickPin.position.set(hit.point.x, displacedY + 4.5, hit.point.z);
+        clickPin.visible = true;
+
+        // Position Floating Callout Tooltip
+        callout.style.left = `${event.clientX}px`;
+        callout.style.top = `${event.clientY - 20}px`;
+        callout.style.display = "block";
+
+        document.getElementById("callout-title").innerText = `${totalElev.toFixed(1)} m elevation`;
+        document.getElementById("callout-height").innerText = `+${structHeight.toFixed(1)} m structure height`;
+      }
+    });
+
+    // 8. Header Controls
+    const dispSlider = document.getElementById("disp-slider");
+    dispSlider.addEventListener("input", (e) => {
+      const val = parseFloat(e.target.value);
+      document.getElementById("disp-val").innerText = val;
+      material.displacementScale = val;
+      currentDisplacementScale = val;
+    });
+
+    document.getElementById("reset-cam-btn").addEventListener("click", () => {
+      camera.position.set(30, 240, 310);
+      controls.target.set(20, 10, 0);
+    });
+
+    // 9. Fullscreen Toggle Implementation (↗ / ↙)
+    const expandBtn = document.getElementById("expand-btn");
+    expandBtn.addEventListener("click", () => {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => {
+          console.warn("Fullscreen request error:", err);
+        });
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+      }
+    });
+
+    document.addEventListener("fullscreenchange", () => {
+      if (document.fullscreenElement) {
+        expandBtn.innerText = "↙";
+        expandBtn.title = "Exit Fullscreen";
+      } else {
+        expandBtn.innerText = "↗";
+        expandBtn.title = "Toggle Fullscreen";
+      }
+    });
+
+    // 10. Responsive Window Resize Handler
+    window.addEventListener("resize", () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    // 11. Animation Loop
+    renderer.setAnimationLoop(() => {
+      controls.update();
+      renderer.render(scene, camera);
+    });
+  </script>
+</body>
+</html>

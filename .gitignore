@@ -1,0 +1,36 @@
+# Gitignore for DepthWizard (SIH2026 - PS175)
+
+# Project Context & Agent Documentation (User Requested)
+IMPLEMENTATION_PLAN.md
+AGENTS.md
+DEV_CONTEXT.md
+
+# Python Virtual Environments & Packages
+.venv/
+env/
+venv/
+ENV/
+*.egg-info/
+dist/
+build/
+
+# Byte-compiled / Optimized Python Files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Output & Cache Directories
+data/outputs/
+*.log
+.cache/
+
+# OS Generated Files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+
+# IDE & Editor Settings
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
