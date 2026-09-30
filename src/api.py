@@ -123,6 +123,12 @@ def process_image_pipeline(
     if "depth_8bit" in exported:
         shutil.copyfile(exported["depth_8bit"], viewer_depth)
 
+    res_x = float(geo_meta.resolution[0]) if (geo_meta and geo_meta.resolution) else 0.5
+    res_y = float(geo_meta.resolution[1]) if (geo_meta and geo_meta.resolution) else 0.5
+    footprint_w_m = round(w * res_x, 1)
+    footprint_h_m = round(h * res_y, 1)
+    area_km2 = round((footprint_w_m * footprint_h_m) / 1_000_000, 4)
+
     payload = {
         "status": "success",
         "image_name": stem,
@@ -131,6 +137,15 @@ def process_image_pipeline(
         "crs": geo_meta.crs,
         "texture_url": f"public/{stem}_rgb.png",
         "displacement_url": f"public/{stem}_depth.png",
+        "spatial_dimensions": {
+            "width_px": w,
+            "height_px": h,
+            "pixel_resolution_m": round(res_x, 2),
+            "footprint_width_m": footprint_w_m,
+            "footprint_height_m": footprint_h_m,
+            "area_km2": area_km2,
+            "area_ha": round(area_km2 * 100, 2),
+        },
         "elevation_stats": {
             "base_elevation_m": round(float(calib.b), 2),
             "max_height_range_m": round(float(calib.a), 2),

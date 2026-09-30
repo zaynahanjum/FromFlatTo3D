@@ -164,25 +164,32 @@
       background: rgba(35, 37, 45, 0.95);
     }
 
-    /* Intuitive Left Stats & Height Overview Card */
+    /* Clean Terrain Inspector Panel */
     #stats-card {
       position: fixed;
       top: 80px;
       left: 24px;
-      width: 300px;
-      background: rgba(24, 25, 31, 0.92);
+      width: 308px;
+      max-height: calc(100vh - 105px);
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+      background: rgba(22, 23, 29, 0.94);
       border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 20px;
-      padding: 18px;
+      border-radius: 18px;
+      padding: 16px;
       z-index: 20;
       backdrop-filter: blur(18px);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
+      color: #e2e8f0;
     }
     .card-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
     }
     .card-title {
       font-size: 13px;
@@ -197,78 +204,94 @@
       background: rgba(168, 85, 247, 0.18);
       color: #c084fc;
       border: 1px solid rgba(168, 85, 247, 0.3);
-      padding: 2px 8px;
+      padding: 2px 7px;
       border-radius: 9999px;
     }
 
-    /* Main Prominent Feature Height */
-    .hero-stat {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      border-radius: 12px;
-      padding: 12px;
+    /* 2x2 Clean Metric Grid */
+    .metric-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
       margin-bottom: 14px;
     }
-    .hero-label {
+    .metric-cell {
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 10px;
+      padding: 9px 11px;
+      display: flex;
+      flex-direction: column;
+    }
+    .metric-label {
       font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
       color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
       margin-bottom: 3px;
     }
-    .hero-value {
-      font-size: 26px;
+    .metric-val {
+      font-size: 17px;
       font-weight: 800;
       color: #ffffff;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.01em;
     }
-    .hero-sub {
-      font-size: 11px;
-      color: #a855f7;
-      font-weight: 500;
-      margin-top: 2px;
+    .metric-val.highlight {
+      color: #c084fc;
     }
 
-    /* Height Distribution Spectrum with Clear Labels */
-    .section-label {
+    /* Elevation Profile Distribution */
+    .curve-section {
+      margin-bottom: 14px;
+    }
+    .curve-header {
+      display: flex;
+      justify-content: space-between;
       font-size: 11px;
       font-weight: 600;
       color: #cbd5e1;
       margin-bottom: 6px;
-      display: flex;
-      justify-content: space-between;
     }
-    .histogram-box {
+    .curve-box {
       width: 100%;
-      height: 48px;
-      background: rgba(0, 0, 0, 0.3);
+      height: 42px;
+      background: rgba(0, 0, 0, 0.28);
       border-radius: 8px;
-      padding: 6px 8px;
+      padding: 5px 6px;
       border: 1px solid rgba(255, 255, 255, 0.05);
       display: flex;
       align-items: flex-end;
-      gap: 3px;
+      gap: 2px;
       margin-bottom: 4px;
     }
-    .bar {
+    .curve-bar {
       flex: 1;
       border-radius: 2px 2px 0 0;
-      min-height: 3px;
+      min-height: 2px;
       transition: height 0.3s ease;
     }
-    .bar-spectrum-labels {
+    .curve-axis {
       display: flex;
       justify-content: space-between;
-      font-size: 9px;
+      font-size: 9.5px;
       color: #94a3b8;
-      margin-bottom: 14px;
     }
-    .bar-spectrum-labels span:first-child { color: #10b981; font-weight: 600; }
-    .bar-spectrum-labels span:nth-child(2) { color: #38bdf8; font-weight: 600; }
-    .bar-spectrum-labels span:last-child { color: #c084fc; font-weight: 600; }
 
-    /* Intuitive 3-Part Area Breakdown */
-    .area-bar {
+    /* Universal Surface Relief (Forests, Cities & Landscapes) */
+    .relief-section {
+      border-top: 1px solid rgba(255, 255, 255, 0.07);
+      padding-top: 10px;
+      margin-bottom: 12px;
+    }
+    .relief-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      font-weight: 600;
+      color: #cbd5e1;
+      margin-bottom: 6px;
+    }
+    .relief-track {
       width: 100%;
       height: 7px;
       background: rgba(0, 0, 0, 0.4);
@@ -277,56 +300,97 @@
       display: flex;
       margin-bottom: 6px;
     }
-    .area-seg-ground { background: #10b981; height: 100%; width: 50%; transition: width 0.3s; }
-    .area-seg-mid    { background: #38bdf8; height: 100%; width: 35%; transition: width 0.3s; }
-    .area-seg-tall   { background: #a855f7; height: 100%; width: 15%; transition: width 0.3s; }
-
-    .area-legend-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 4px;
-      font-size: 9.5px;
-      color: #94a3b8;
-      margin-bottom: 14px;
+    .relief-seg-floor {
+      background: #10b981;
+      height: 100%;
+      width: 60%;
+      transition: width 0.3s;
     }
-    .legend-item {
+    .relief-seg-elevated {
+      background: #c084fc;
+      height: 100%;
+      width: 40%;
+      transition: width 0.3s;
+    }
+    .relief-legend {
       display: flex;
       flex-direction: column;
+      gap: 5px;
+      font-size: 10px;
+      color: #94a3b8;
     }
-    .legend-bullet {
+    .relief-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .relief-label {
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 5px;
+      font-weight: 500;
+      color: #cbd5e1;
     }
-    .bullet-dot {
+    .dot-floor {
       width: 6px;
       height: 6px;
       border-radius: 50%;
+      background: #10b981;
     }
-    .legend-val {
-      font-size: 12px;
+    .dot-elevated {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #c084fc;
+    }
+    .relief-desc {
+      font-size: 9px;
+      color: #64748b;
+      margin-left: 2px;
+    }
+    .relief-val {
+      font-size: 11px;
       font-weight: 700;
       color: #ffffff;
-      margin-top: 1px;
     }
 
-    /* Plain-English Elevation Details Table */
-    .details-table {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    /* Scene Spatial Scale & Dimensions */
+    .dims-section {
+      border-top: 1px solid rgba(255, 255, 255, 0.07);
       padding-top: 10px;
     }
-    .details-row {
+    .dims-header {
+      font-size: 11px;
+      font-weight: 600;
+      color: #cbd5e1;
+      margin-bottom: 6px;
       display: flex;
       justify-content: space-between;
-      font-size: 11px;
-      color: #94a3b8;
     }
-    .details-row strong {
-      color: #f1f5f9;
-      font-weight: 600;
+    .dims-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+    }
+    .dim-pill {
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      padding: 6px 8px;
+      display: flex;
+      flex-direction: column;
+    }
+    .dim-tag {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      color: #94a3b8;
+      margin-bottom: 2px;
+    }
+    .dim-val {
+      font-size: 12px;
+      font-weight: 700;
+      color: #f8fafc;
     }
 
     /* Floating Point Measurement Callout Card */
@@ -386,18 +450,12 @@
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
     }
     .legend-gradient {
-      display: flex;
-      gap: 3px;
+      width: 100px;
+      height: 8px;
+      border-radius: 9999px;
+      background: linear-gradient(to right, rgb(25, 45, 160), rgb(0, 210, 225), rgb(35, 205, 70), rgb(255, 205, 0), rgb(235, 35, 35));
+      margin: 0 4px;
     }
-    .legend-box {
-      width: 10px;
-      height: 10px;
-      border-radius: 2px;
-    }
-    .l-1 { background: #10b981; }
-    .l-2 { background: #38bdf8; }
-    .l-3 { background: #8b5cf6; }
-    .l-4 { background: #c084fc; }
 
     /* Ultra-Minimal Sleek Loading Overlay */
     #loading-overlay {
@@ -572,67 +630,89 @@
     </div>
   </div>
 
-  <!-- Intuitive Height & Terrain Overview Dashboard (Top-Left) -->
+  <!-- Clean Terrain Inspector (Top-Left) -->
   <div id="stats-card">
     <div class="card-header">
-      <span class="card-title">Height & Terrain Overview</span>
-      <span class="status-tag" id="status-tag">AI DSM</span>
+      <span class="card-title">Terrain Inspector</span>
+      <span class="status-tag" id="status-tag">Live 3D</span>
     </div>
 
-    <!-- Big Intuitive Stat: Tallest Feature Above Ground -->
-    <div class="hero-stat">
-      <div class="hero-label">Tallest Structure Above Ground</div>
-      <div class="hero-value" id="hero-span">+0 m</div>
-      <div class="hero-sub" id="hero-range">Ground: 0m → Peak: 0m</div>
-    </div>
-
-    <!-- Elevation Spectrum Graph (Color-coded Ground -> Mid -> Tall) -->
-    <div class="section-label">
-      <span>Elevation Spectrum</span>
-      <span id="stat-peak-tag" style="color:#c084fc; font-weight:700;">Peak: -- m</span>
-    </div>
-    <div class="histogram-box" id="bar-chart"></div>
-    <div class="bar-spectrum-labels">
-      <span>● Flat Ground</span>
-      <span>● Mid-Rise</span>
-      <span>● Towers & Hills</span>
-    </div>
-
-    <!-- 3-Tier Plain-English Area Breakdown -->
-    <div class="section-label">Area Composition</div>
-    <div class="area-bar">
-      <div class="area-seg-ground" id="seg-ground"></div>
-      <div class="area-seg-mid" id="seg-mid"></div>
-      <div class="area-seg-tall" id="seg-tall"></div>
-    </div>
-    <div class="area-legend-grid">
-      <div class="legend-item">
-        <div class="legend-bullet"><span class="bullet-dot" style="background:#10b981;"></span> Ground</div>
-        <div class="legend-val" id="pct-ground">--%</div>
+    <!-- 2x2 Clean Metric Grid (Universal for Cities, Forests & Landscapes) -->
+    <div class="metric-grid">
+      <div class="metric-cell">
+        <span class="metric-label">Base Ground</span>
+        <span class="metric-val" id="stat-base">-- m</span>
       </div>
-      <div class="legend-item">
-        <div class="legend-bullet"><span class="bullet-dot" style="background:#38bdf8;"></span> Mid-Rise</div>
-        <div class="legend-val" id="pct-mid">--%</div>
+      <div class="metric-cell">
+        <span class="metric-label">Peak Summit</span>
+        <span class="metric-val highlight" id="stat-peak">-- m</span>
       </div>
-      <div class="legend-item">
-        <div class="legend-bullet"><span class="bullet-dot" style="background:#a855f7;"></span> Towers</div>
-        <div class="legend-val" id="pct-tall">--%</div>
+      <div class="metric-cell">
+        <span class="metric-label">Tallest Feature</span>
+        <span class="metric-val" id="stat-struct">-- m</span>
+      </div>
+      <div class="metric-cell">
+        <span class="metric-label">Average Height</span>
+        <span class="metric-val" id="stat-mean">-- m</span>
       </div>
     </div>
 
-    <!-- Elevation Breakdown Table -->
-    <div class="details-table">
-      <div class="details-row">
-        <span>Ground Level (Base):</span>
-        <strong id="stat-base">-- m</strong>
+    <!-- Elevation Profile Distribution -->
+    <div class="curve-section">
+      <div class="curve-header">
+        <span>Elevation Profile</span>
+        <span id="stat-range-label" style="color:#94a3b8; font-weight:500;">Spread: --</span>
       </div>
-      <div class="details-row">
-        <span>Average Height:</span>
-        <strong id="stat-mean">-- m</strong>
+      <div class="curve-box" id="curve-chart"></div>
+      <div class="curve-axis">
+        <span id="axis-min">50m (Min)</span>
+        <span id="axis-max">185m (Max)</span>
       </div>
-      <div class="details-row">
-        <span>Highest Peak:</span>
-        <strong id="stat-peak" style="color:#c084fc;">-- m</strong>
+    </div>
+
+    <!-- Universal Surface Relief (Forests, Cities & Natural Landforms) -->
+    <div class="relief-section">
+      <div class="relief-header">
+        <span>Surface Relief Distribution</span>
+      </div>
+      <div class="relief-track">
+        <div class="relief-seg-floor" id="seg-floor"></div>
+        <div class="relief-seg-elevated" id="seg-elevated"></div>
+      </div>
+      <div class="relief-legend">
+        <div class="relief-row">
+          <span class="relief-label"><span class="dot-floor"></span> Base Floor <span class="relief-desc">(ground, roads, forest floor)</span></span>
+          <span class="relief-val" id="pct-floor">--%</span>
+        </div>
+        <div class="relief-row">
+          <span class="relief-label"><span class="dot-elevated"></span> Elevated Relief <span class="relief-desc">(canopy, buildings, hills)</span></span>
+          <span class="relief-val" id="pct-elevated">--%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scene Footprint & Spatial Scale -->
+    <div class="dims-section">
+      <div class="dims-header">
+        <span>Survey Dimensions & Scale</span>
+      </div>
+      <div class="dims-grid">
+        <div class="dim-pill">
+          <span class="dim-tag">Footprint Size</span>
+          <span class="dim-val" id="dim-footprint">-- m × -- m</span>
+        </div>
+        <div class="dim-pill">
+          <span class="dim-tag">Covered Area</span>
+          <span class="dim-val" id="dim-area">-- km²</span>
+        </div>
+        <div class="dim-pill">
+          <span class="dim-tag">Grid Resolution</span>
+          <span class="dim-val" id="dim-res">-- × -- px</span>
+        </div>
+        <div class="dim-pill">
+          <span class="dim-tag">Vertical Relief</span>
+          <span class="dim-val" id="dim-relief">Δ -- m</span>
+        </div>
       </div>
     </div>
   </div>
@@ -644,16 +724,12 @@
     <div class="callout-meta" id="callout-slope">Incline: <strong>14.2°</strong></div>
   </div>
 
-  <!-- Bottom Intensity Legend -->
+  <!-- Bottom Elevation Scientific Scale -->
   <div id="bottom-legend">
-    <span>Elevation:</span>
-    <div class="legend-gradient">
-      <div class="legend-box l-1" title="Flat ground"></div>
-      <div class="legend-box l-2" title="Low / Mid buildings"></div>
-      <div class="legend-box l-3" title="Towers / Peaks"></div>
-      <div class="legend-box l-4" title="Highest summit"></div>
-    </div>
-    <span>High</span>
+    <span style="font-size:10px; color:#94a3b8;">Elevation:</span>
+    <span style="font-size:10px; color:#cbd5e1; font-weight:600;">Low</span>
+    <div class="legend-gradient"></div>
+    <span style="font-size:10px; color:#cbd5e1; font-weight:600;">High</span>
   </div>
 
   <script type="module">
@@ -722,8 +798,10 @@
     terrainMesh.receiveShadow = false;
     scene.add(terrainMesh);
 
-    // 7. Intuitive Terrain & Height Statistics Engine
-    function updateLiveAnalytics(canvas, base, span) {
+    let currentSpatialDims = null;
+
+    // 7. Clean Terrain & Height Analytics Engine
+    function updateLiveAnalytics(canvas, base, span, spatialDims = null) {
       if (!canvas || canvas.width === 0 || canvas.height === 0) return;
       const ctx = canvas.getContext("2d");
       const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
@@ -746,66 +824,116 @@
         sampledCount++;
       }
 
-      // 1. Color-coded 24-Bar Height Spectrum Histogram
-      const maxBinCount = Math.max(...bins, 1);
-      const chartEl = document.getElementById("bar-chart");
-      chartEl.innerHTML = "";
-      bins.forEach((count, idx) => {
-        const b = document.createElement("div");
-        b.className = "bar";
-        const pct = Math.max(5, (count / maxBinCount) * 100);
-        b.style.height = `${pct}%`;
-
-        // Color gradient: Emerald (Ground) -> Blue (Mid) -> Purple (Tall)
-        if (idx < 8) {
-          b.style.background = "#10b981";
-        } else if (idx < 16) {
-          b.style.background = "#38bdf8";
-        } else {
-          b.style.background = "#a855f7";
-        }
-        b.title = `Bin ${idx + 1}: ${count} samples`;
-        chartEl.appendChild(b);
-      });
-
-      // 2. Intuitive Human Metrics Calculation
+      // 1. Core 4 Metrics (Universal for All Landscapes)
       const peakM = base + (maxVal / 255.0) * span;
       const baseM = base + (minVal / 255.0) * span;
       const meanM = base + ((sum / (sampledCount || 1)) / 255.0) * span;
       const structSpanM = peakM - baseM;
 
-      document.getElementById("hero-span").innerText = `+${structSpanM.toFixed(1)} m`;
-      document.getElementById("hero-range").innerText = `Ground: ${baseM.toFixed(0)}m  →  Peak: ${peakM.toFixed(0)}m`;
-      document.getElementById("stat-peak-tag").innerText = `Peak: ${peakM.toFixed(0)} m`;
-      document.getElementById("stat-base").innerText = `${baseM.toFixed(1)} m`;
-      document.getElementById("stat-mean").innerText = `${meanM.toFixed(1)} m`;
-      document.getElementById("stat-peak").innerText = `${peakM.toFixed(1)} m`;
+      const baseEl = document.getElementById("stat-base");
+      const peakEl = document.getElementById("stat-peak");
+      const structEl = document.getElementById("stat-struct");
+      const meanEl = document.getElementById("stat-mean");
+      if (baseEl) baseEl.innerText = `${baseM.toFixed(1)} m`;
+      if (peakEl) peakEl.innerText = `${peakM.toFixed(1)} m`;
+      if (structEl) structEl.innerText = `+${structSpanM.toFixed(1)} m`;
+      if (meanEl) meanEl.innerText = `${meanM.toFixed(1)} m`;
 
-      // 3. 3-Tier Plain-English Area Composition
-      let groundCount = 0;
-      let midCount = 0;
-      let tallCount = 0;
+      // 2. Elevation Profile Distribution Curve
+      const maxBinCount = Math.max(...bins, 1);
+      const chartEl = document.getElementById("curve-chart");
+      if (chartEl) {
+        chartEl.innerHTML = "";
+        bins.forEach((count, idx) => {
+          const b = document.createElement("div");
+          b.className = "curve-bar";
+          const pct = Math.max(6, (count / maxBinCount) * 100);
+          b.style.height = `${pct}%`;
 
-      for (let i = 0; i < numBins; i++) {
-        if (i < 8) groundCount += bins[i];
-        else if (i < 17) midCount += bins[i];
-        else tallCount += bins[i];
+          // Color ramp corresponding to 5-band scientific spectrum:
+          const t = idx / (numBins - 1);
+          if (t < 0.20) {
+            b.style.background = "#1e3a8a"; // deep blue
+          } else if (t < 0.40) {
+            b.style.background = "#06b6d4"; // cyan
+          } else if (t < 0.60) {
+            b.style.background = "#22c55e"; // green
+          } else if (t < 0.80) {
+            b.style.background = "#eab308"; // amber
+          } else {
+            b.style.background = "#ef4444"; // red
+          }
+          b.title = `${(base + t * span).toFixed(0)}m: ${count} samples`;
+          chartEl.appendChild(b);
+        });
       }
-      const total = groundCount + midCount + tallCount || 1;
-      const groundPct = Math.round((groundCount / total) * 100);
-      const midPct = Math.round((midCount / total) * 100);
-      const tallPct = Math.max(0, 100 - (groundPct + midPct));
 
-      document.getElementById("seg-ground").style.width = `${groundPct}%`;
-      document.getElementById("seg-mid").style.width = `${midPct}%`;
-      document.getElementById("seg-tall").style.width = `${tallPct}%`;
+      const rangeLabelEl = document.getElementById("stat-range-label");
+      if (rangeLabelEl) rangeLabelEl.innerText = `Δ ${structSpanM.toFixed(0)}m span`;
+      const axisMinEl = document.getElementById("axis-min");
+      if (axisMinEl) axisMinEl.innerText = `${baseM.toFixed(0)}m`;
+      const axisMaxEl = document.getElementById("axis-max");
+      if (axisMaxEl) axisMaxEl.innerText = `${peakM.toFixed(0)}m`;
 
-      document.getElementById("pct-ground").innerText = `${groundPct}%`;
-      document.getElementById("pct-mid").innerText = `${midPct}%`;
-      document.getElementById("pct-tall").innerText = `${tallPct}%`;
+      // 3. Universal Surface Relief (Base Floor vs Elevated Relief)
+      let floorCount = 0;
+      let elevatedCount = 0;
+      for (let i = 0; i < numBins; i++) {
+        if (i < 7) floorCount += bins[i];
+        else elevatedCount += bins[i];
+      }
+      const total = floorCount + elevatedCount || 1;
+      const floorPct = Math.round((floorCount / total) * 100);
+      const elevatedPct = Math.max(0, 100 - floorPct);
+
+      const segFloor = document.getElementById("seg-floor");
+      const segElevated = document.getElementById("seg-elevated");
+      if (segFloor) segFloor.style.width = `${floorPct}%`;
+      if (segElevated) segElevated.style.width = `${elevatedPct}%`;
+
+      const pctFloor = document.getElementById("pct-floor");
+      const pctElevated = document.getElementById("pct-elevated");
+      if (pctFloor) pctFloor.innerText = `${floorPct}%`;
+      if (pctElevated) pctElevated.innerText = `${elevatedPct}%`;
+
+      // 4. Survey Dimensions & Physical Scale Calculation
+      let widthM = canvas.width * 1.0;
+      let heightM = canvas.height * 1.0;
+      let gsdM = 1.0;
+      let areaKm2 = (widthM * heightM) / 1_000_000;
+
+      if (spatialDims) {
+        widthM = spatialDims.footprint_width_m || widthM;
+        heightM = spatialDims.footprint_height_m || heightM;
+        gsdM = spatialDims.pixel_resolution_m || gsdM;
+        areaKm2 = spatialDims.area_km2 || ((widthM * heightM) / 1_000_000);
+      } else {
+        // Default GSD = ~0.7 m/px for 512px aerial scenes (~360m x 360m)
+        const scaleFactor = 360.0 / Math.max(canvas.width, 1);
+        widthM = canvas.width * scaleFactor;
+        heightM = canvas.height * scaleFactor;
+        gsdM = scaleFactor;
+        areaKm2 = (widthM * heightM) / 1_000_000;
+      }
+
+      const dimFootprint = document.getElementById("dim-footprint");
+      const dimArea = document.getElementById("dim-area");
+      const dimRes = document.getElementById("dim-res");
+      const dimRelief = document.getElementById("dim-relief");
+
+      if (dimFootprint) dimFootprint.innerText = `${Math.round(widthM)}m × ${Math.round(heightM)}m`;
+      if (dimArea) {
+        if (areaKm2 < 0.05) {
+          dimArea.innerText = `${(areaKm2 * 100).toFixed(1)} ha`;
+        } else {
+          dimArea.innerText = `${areaKm2.toFixed(3)} km²`;
+        }
+      }
+      if (dimRes) dimRes.innerText = `${canvas.width}×${canvas.height} px (${gsdM.toFixed(1)}m/px)`;
+      if (dimRelief) dimRelief.innerText = `Δ ${structSpanM.toFixed(1)} m`;
     }
 
-    // 8. Elevation Heatmap Texture Generator
+    // 8. Scientific High-Accuracy Elevation Heatmap Texture Generator (Turbo-GIS standard)
     function generateHeatmap(srcCanvas) {
       const w = srcCanvas.width;
       const h = srcCanvas.height;
@@ -821,29 +949,36 @@
       const imgData = ctx.createImageData(w, h);
       const d = imgData.data;
 
+      // 5-stop Turbo-GIS scientific colormap:
+      // 0.00: Deep Navy/Blue [25, 45, 160] (ground/water)
+      // 0.25: Bright Cyan [0, 210, 225] (lowlands/street)
+      // 0.50: Vivid Green [35, 205, 70] (low-rise/structures)
+      // 0.75: Warm Amber/Yellow [255, 205, 0] (mid-rise)
+      // 1.00: Fiery Crimson/Red [235, 35, 35] (tallest peaks & roofs)
+
       for (let i = 0; i < srcData.length; i += 4) {
         const t = srcData[i] / 255.0;
         let r, g, b;
         if (t < 0.25) {
           const k = t / 0.25;
-          r = Math.floor(16 + k * 30);
-          g = Math.floor(185 - k * 30);
-          b = Math.floor(129 + k * 80);
-        } else if (t < 0.5) {
+          r = Math.floor(25 + k * (0 - 25));
+          g = Math.floor(45 + k * (210 - 45));
+          b = Math.floor(160 + k * (225 - 160));
+        } else if (t < 0.50) {
           const k = (t - 0.25) / 0.25;
-          r = Math.floor(46 + k * 10);
-          g = Math.floor(155 - k * 35);
-          b = Math.floor(209 + k * 40);
+          r = Math.floor(0 + k * (35 - 0));
+          g = Math.floor(210 + k * (205 - 210));
+          b = Math.floor(225 + k * (70 - 225));
         } else if (t < 0.75) {
-          const k = (t - 0.5) / 0.25;
-          r = Math.floor(56 + k * 110);
-          g = Math.floor(120 - k * 40);
-          b = Math.floor(249 - k * 30);
+          const k = (t - 0.50) / 0.25;
+          r = Math.floor(35 + k * (255 - 35));
+          g = Math.floor(205 + k * (205 - 205));
+          b = Math.floor(70 + k * (0 - 70));
         } else {
           const k = (t - 0.75) / 0.25;
-          r = Math.floor(166 + k * 74);
-          g = Math.floor(80 + k * 52);
-          b = Math.floor(219 + k * 33);
+          r = Math.floor(255 + k * (235 - 255));
+          g = Math.floor(205 + k * (35 - 205));
+          b = Math.floor(0 + k * (35 - 0));
         }
         d[i] = r;
         d[i + 1] = g;
@@ -898,8 +1033,9 @@
     }
 
     // 10. Load Terrain Model & Setup Textures
-    function loadModelTextures(rgbUrl, depthUrl) {
+    function loadModelTextures(rgbUrl, depthUrl, spatialDims = null) {
       hideMeasurement();
+      currentSpatialDims = spatialDims;
 
       textureLoader.load(rgbUrl, (tex) => {
         tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
@@ -925,7 +1061,7 @@
           material.needsUpdate = true;
         }
 
-        updateLiveAnalytics(depthCanvas, BASE_ELEVATION, MAX_HEIGHT_RANGE);
+        updateLiveAnalytics(depthCanvas, BASE_ELEVATION, MAX_HEIGHT_RANGE, currentSpatialDims);
       });
     }
 
@@ -1081,7 +1217,7 @@
           document.getElementById("status-tag").innerText = data.mode || "AI DSM";
         }
 
-        loadModelTextures(data.texture_url, data.displacement_url);
+        loadModelTextures(data.texture_url, data.displacement_url, data.spatial_dimensions || null);
 
         setTimeout(() => {
           loadingOverlay.classList.remove("show");

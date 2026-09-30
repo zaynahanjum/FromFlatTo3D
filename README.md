@@ -6,7 +6,7 @@
 
 ---
 
-## 🚀 Quick Start (Run in 1 Command)
+## Quick Start (Run in 1 Command)
 
 ### 1. Activate Environment & Install Dependencies
 ```bash
@@ -23,11 +23,11 @@ uvicorn src.api:app --reload --port 8000
 ```
 
 ### 3. Open in Browser
-Navigate to **[http://localhost:8000/viewer/index.html](http://localhost:8000/viewer/index.html)** in your web browser.
+Navigate to **[http://localhost:8000/](http://localhost:8000/)** (or `http://localhost:8000/viewer/app.html`) in your web browser.
 
 ---
 
-## 🌟 How It Works (The AI Pipeline)
+## How It Works (The AI Pipeline)
 
 Every image uploaded through the dashboard automatically passes through the end-to-end Python AI pipeline:
 
@@ -50,42 +50,50 @@ Input 2D Optical Image (PNG / JPG / GeoTIFF)
                             • Single-band float32 GeoTIFF (.tif) for QGIS/GIS software
                             • 16-bit high-precision heightmap PNG for game engines (Unity / Unreal)
                             • 8-bit displacement map PNG for WebGL
-                            • Metadata JSON with elevation statistics
+                            • Metadata JSON with elevation statistics and spatial dimensions
            │
            ▼
-[5] viewer/index.html   ──► Seamlessly reloads 3D terrain, elevation heatmap, and live analytics
+[5] viewer/app.html     ──► Seamlessly reloads 3D terrain, scientific heatmap, and Terrain Inspector
 ```
 
 ---
 
-## 🎮 Interactive 3D Dashboard Features
+## Interactive 3D Dashboard Features
 
-- **Upload Image with Centered Loading Overlay**:
+- **Upload Image with Minimal Pill Overlay**:
   - Click **Upload Image** to select any satellite tile, aerial photo, or drone capture.
-  - A centered radar pulse modal displays the AI processing progress in real time.
-- **Click-to-Measure Elevation & Slope (Task T10)**:
+  - A modern, sleek centered loading pill displays processing status without visual clutter.
+- **Click-to-Measure Elevation & Slope**:
   - Click anywhere on the terrain surface.
-  - A high-visibility glowing marker anchors to the surface, and a floating callout card displays:
+  - A purple measurement pin anchors to the clicked surface, and a floating callout displays:
     - **Total Elevation in meters** (e.g. `185.0 m elevation`)
-    - **Structure Height above ground** (e.g. `+135.0 m structure`)
-    - **Local Surface Slope in degrees** (e.g. `Slope: 14.2°`) calculated via finite-difference gradient estimation:
+    - **Feature Height above ground** (e.g. `+135.0 m above ground`)
+    - **Local Surface Incline in degrees** (e.g. `Incline: 14.2°`) calculated via finite-difference gradient estimation:
       $$\text{slope} = \arctan\left(\sqrt{\left(\frac{\partial z}{\partial x}\right)^2 + \left(\frac{\partial z}{\partial y}\right)^2}\right) \times \frac{180^\circ}{\pi}$$
-- **Dynamic Elevation Analyzer (Top-Left Card)**:
-  - Replaces static charts with a **live 24-bar elevation frequency histogram** calculated dynamically from the active terrain pixels.
-  - Real-time **Elevation Tier Ratio Bar** (Plains / Lowlands vs. Ridges / Peaks).
-  - Live statistics table showing Peak Elevation, Ground Datum, Mean Altitude, and Vertical Span in meters.
+  - **Outside-Click Dismissal**: Clicking anywhere outside the terrain automatically dismisses the measurement marker and callout.
+- **Terrain Inspector (Top-Left Dashboard)**:
+  - **Core 2x2 Metrics Grid**: Base Ground, Peak Summit, Tallest Feature, and Average Height in meters.
+  - **Elevation Profile Distribution**: Dynamic height distribution curve with minimum and maximum elevation axis markers.
+  - **Universal Surface Relief Distribution**: Applicable to forests, cities, and natural landforms:
+    - **Base Floor**: Lowlands, flat ground, roads, forest floor, or water bodies.
+    - **Elevated Relief**: Tree canopy, buildings, cliffs, knolls, and ridges.
+  - **Survey Dimensions & Scale**:
+    - **Footprint Size**: Physical width and length in meters (e.g. `512 m × 512 m`).
+    - **Covered Area**: Total surveyed ground area in square kilometers or hectares (e.g. `0.26 km²` / `26.2 ha`).
+    - **Grid Resolution**: Image pixel dimensions and Ground Sampling Distance (e.g. `512 × 512 px (0.5 m/px)`).
+    - **Vertical Relief**: Total height difference from lowest base to highest summit (e.g. `Δ 135.0 m`).
 - **View Mode Switcher**:
   - **`Textured`**: Photorealistic optical aerial imagery.
-  - **`Heatmap`**: Turbo/Viridis-inspired thermal elevation color ramp mapping height layers.
+  - **`Heatmap`**: 5-band Turbo-GIS scientific elevation colormap (Deep Navy $\to$ Bright Cyan $\to$ Vivid Green $\to$ Warm Amber $\to$ Fiery Crimson) for razor-sharp contour separation.
   - **`Wireframe`**: 3D geometric grid topology.
 - **Camera Controls & Fullscreen**:
-  - Orbit, zoom, and pan via mouse.
-  - Reset camera view (`⟲`) and native browser Fullscreen toggle (`↗` / `↙`).
-  - Height exaggeration slider ($0 \dots 90$).
+  - Orbit, zoom, and pan via mouse or touch controls.
+  - Reset camera view (`↺`) and native browser Fullscreen toggle (`↗` / `↙`).
+  - Height scale slider ($0 \dots 90$) for real-time terrain displacement adjustment.
 
 ---
 
-## 📁 Repository Structure
+## Repository Structure
 
 ```
 depthSIH/
@@ -105,13 +113,14 @@ depthSIH/
 │   ├── create_sample_tile.py     # Generates synthetic 24-building cityscapes with shadows
 │   └── create_landscape_samples.py # Generates mountain ridge and coastal island test tiles
 └── viewer/
-    ├── index.html                # Full-screen Three.js WebGL 3D executive dashboard
+    ├── app.html                  # Full-screen Three.js WebGL 3D executive dashboard
+    ├── index.html                # Standalone viewer fallback
     └── public/                   # Paired RGB textures and height displacement maps
 ```
 
 ---
 
-## 🛠️ Standalone CLI Commands
+## Standalone CLI Commands
 
 You can run individual modules independently from the terminal:
 
@@ -142,7 +151,7 @@ python -m src.dsm_export data/outputs/calibrated_dsm.npy --output-prefix data/ou
 
 ---
 
-## 🧪 Testing with Sample Scenes
+## Testing with Sample Scenes
 
 Pre-generated test scenes are available in `data/raw/`:
 1. **`data/raw/sample_city.png`**: High-rise metropolis with stepped skyscrapers and cast shadows.
@@ -151,6 +160,6 @@ Pre-generated test scenes are available in `data/raw/`:
 
 ---
 
-## 📜 Governance & Git
+## Governance & Git
 - Git branch: `dev`
 - Internal engineering plans, environment caches, and context documents are protected via `.gitignore`.
