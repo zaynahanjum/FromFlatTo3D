@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Flat to 3D</title>
+  <title>DepthWizard - 3D Flythrough & Height Estimation</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body {
@@ -78,9 +78,58 @@
       color: #f3f4f6;
       letter-spacing: -0.01em;
     }
-    .brand-title span {
-      color: #6b7280;
-      font-weight: 400;
+
+    /* Action Buttons & Mode Switch */
+    .header-action-btn {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(139, 92, 246, 0.16);
+      border: 1px solid rgba(139, 92, 246, 0.35);
+      color: #c084fc;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 7px 16px;
+      border-radius: 9999px;
+      backdrop-filter: blur(14px);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    }
+    .header-action-btn:hover {
+      background: rgba(139, 92, 246, 0.28);
+      color: #ffffff;
+      transform: scale(1.02);
+    }
+
+    .mode-switch-group {
+      display: flex;
+      background: rgba(26, 27, 33, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 9999px;
+      padding: 3px;
+      backdrop-filter: blur(14px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    }
+    .mode-btn {
+      background: transparent;
+      border: none;
+      color: #9ca3af;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 5px 12px;
+      border-radius: 9999px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .mode-btn:hover {
+      color: #ffffff;
+    }
+    .mode-btn.active {
+      background: #8b5cf6;
+      color: #ffffff;
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(139, 92, 246, 0.4);
     }
 
     .header-control {
@@ -97,7 +146,7 @@
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
     }
     .header-control input[type="range"] {
-      width: 90px;
+      width: 80px;
       accent-color: #8b5cf6;
       cursor: pointer;
     }
@@ -167,7 +216,7 @@
       margin-bottom: 2px;
     }
     .big-metric-val {
-      font-size: 32px;
+      font-size: 30px;
       font-weight: 700;
       color: #ffffff;
       letter-spacing: -0.03em;
@@ -248,7 +297,7 @@
     /* Floating Point Inspection Callout (with wireframe) */
     #callout-card {
       position: fixed;
-      width: 220px;
+      width: 230px;
       background: rgba(24, 25, 30, 0.94);
       border: 1px solid rgba(255, 255, 255, 0.12);
       border-radius: 14px;
@@ -265,13 +314,12 @@
       position: absolute;
       bottom: -6px;
       left: 50%;
-      transform: translateX(-50%);
+      transform: translateX(-50%) rotate(45deg);
       width: 10px;
       height: 10px;
       background: rgba(24, 25, 30, 0.94);
       border-right: 1px solid rgba(255, 255, 255, 0.12);
       border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-      transform: rotate(45deg);
     }
     .callout-header {
       font-size: 13px;
@@ -281,13 +329,23 @@
     }
     .callout-sub {
       font-size: 11px;
-      color: #a855f7;
+      color: #c084fc;
       font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .callout-meta {
+      font-size: 10px;
+      color: #94a3b8;
+      display: flex;
+      gap: 8px;
       margin-bottom: 8px;
+    }
+    .callout-meta strong {
+      color: #a3e635;
     }
     .wireframe-svg {
       width: 100%;
-      height: 45px;
+      height: 40px;
       stroke: #8b5cf6;
       stroke-width: 1.5;
       fill: rgba(139, 92, 246, 0.12);
@@ -341,6 +399,9 @@
   <!-- Full-Screen 3D Canvas -->
   <div id="viewport-container"></div>
 
+  <!-- Hidden File Input for Image Upload -->
+  <input type="file" id="file-input" accept="image/*,.tif,.tiff" style="display:none;">
+
   <!-- Floating Top Header Bar -->
   <div id="top-header">
     <div class="header-left">
@@ -351,7 +412,20 @@
           <div class="logo-dot"></div>
           <div class="logo-dot"></div>
         </div>
-        <div class="brand-title">Flat to 3D</div>
+        <div class="brand-title">DepthWizard <span>3D</span></div>
+      </div>
+
+      <!-- Upload Button (Task T8/T10) -->
+      <button id="upload-btn" class="header-action-btn" title="Upload new satellite/aerial photo">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+        <span id="upload-text">Upload Image</span>
+      </button>
+
+      <!-- View Mode Switcher (Task T10) -->
+      <div class="mode-switch-group">
+        <button class="mode-btn active" data-mode="textured">Textured</button>
+        <button class="mode-btn" data-mode="heatmap">Heatmap</button>
+        <button class="mode-btn" data-mode="wireframe">Wireframe</button>
       </div>
     </div>
 
@@ -364,19 +438,19 @@
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
       </button>
       <button id="expand-btn" class="icon-btn" title="Toggle Fullscreen">↗</button>
-      <div class="demo-tag">DEMO</div>
+      <div class="demo-tag" id="status-tag">DEMO</div>
     </div>
   </div>
 
   <!-- Left Floating Analytics Card -->
   <div id="stats-card">
     <div class="stats-header">
-      <span>Building Elevation Profile</span>
+      <span id="card-title">Building Elevation Profile</span>
       <span class="dots-menu">•••</span>
     </div>
 
     <div class="big-metric-label">Structure vertical range:</div>
-    <div class="big-metric-val">10–150m</div>
+    <div class="big-metric-val" id="vertical-range-display">50–185m</div>
 
     <!-- Frequency Bar Chart (Violet Gradient) -->
     <div class="bar-chart" id="bar-chart"></div>
@@ -395,11 +469,11 @@
     <div class="building-list">
       <div class="building-item">
         <span>Central Spire Tower</span>
-        <span class="b-val">156.4 m</span>
+        <span class="b-val">185.0 m</span>
       </div>
       <div class="building-item">
         <span>Twin Office Tower A</span>
-        <span class="b-val">132.0 m</span>
+        <span class="b-val">152.0 m</span>
       </div>
       <div class="building-item">
         <span>Tech Innovation Hub</span>
@@ -407,23 +481,22 @@
       </div>
       <div class="building-item">
         <span>Plaza Hotel Complex</span>
-        <span class="b-val">115.0 m</span>
+        <span class="b-val">95.0 m</span>
       </div>
       <div class="building-item">
-        <span>Convention Arena</span>
-        <span class="b-val">82.5 m</span>
+        <span>Ground Street Level</span>
+        <span class="b-val">50.0 m</span>
       </div>
     </div>
   </div>
 
-  <!-- Floating Point Inspection Callout (with wireframe) -->
+  <!-- Floating Point Inspection Callout (with slope & relief) -->
   <div id="callout-card">
-    <div class="callout-header" id="callout-title">125.4 m elevation</div>
-    <div class="callout-sub" id="callout-height">+75.4 m structure height</div>
-    <svg class="wireframe-svg" viewBox="0 0 100 40">
-      <polygon points="0,40 10,32 20,35 30,18 40,24 55,5 70,22 80,12 90,30 100,40"></polygon>
-      <line x1="30" y1="18" x2="55" y2="5"></line>
-      <line x1="55" y1="5" x2="80" y2="12"></line>
+    <div class="callout-header" id="callout-title">185.0 m elevation</div>
+    <div class="callout-sub" id="callout-height">+135.0 m structure</div>
+    <div class="callout-meta" id="callout-slope">Slope: <strong>12.4°</strong></div>
+    <svg class="wireframe-svg" viewBox="0 0 100 30" preserveAspectRatio="none">
+      <path d="M0,28 L15,26 L28,14 L42,6 L50,4 L60,8 L75,20 L88,27 L100,28 Z"></path>
     </svg>
   </div>
 
@@ -443,60 +516,68 @@
     import * as THREE from "three";
     import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-    // 1. Generate Vertical Bar Chart Bars
-    const barContainer = document.getElementById("bar-chart");
-    const barHeights = [25, 45, 60, 30, 75, 88, 95, 65, 80, 50, 40, 55, 70, 85, 92, 48, 62, 78, 86, 68, 52, 74, 90, 82, 58, 42];
-    barHeights.forEach(h => {
+    // 1. Metric Elevation Presets
+    let BASE_ELEVATION = 50.0;
+    let MAX_HEIGHT_RANGE = 150.0;
+    let currentDisplacementScale = 35.0;
+    let currentViewMode = "textured";
+
+    // 2. Populate 26-bar violet gradient histogram
+    const barChart = document.getElementById("bar-chart");
+    const barHeights = [
+      12, 18, 15, 24, 28, 38, 48, 56, 42, 65, 78, 92, 100,
+      86, 74, 62, 54, 45, 36, 40, 32, 25, 20, 16, 14, 10
+    ];
+    barHeights.forEach((h) => {
       const b = document.createElement("div");
       b.className = "bar";
       b.style.height = `${h}%`;
-      barContainer.appendChild(b);
+      barChart.appendChild(b);
     });
 
-    // 2. Constants & Settings
-    const BASE_ELEVATION = 50.0;
-    const MAX_HEIGHT_RANGE = 150.0;
-    let currentDisplacementScale = 35.0;
-
-    // 3. Three.js Full-Screen Viewport Setup
+    // 3. Three.js Scene Setup
     const container = document.getElementById("viewport-container");
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x121316);
+    scene.background = new THREE.Color("#121316");
 
-    const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 8000);
-    // Position camera comfortably showing the full city
+    const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.5, 3000);
     camera.position.set(30, 240, 310);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.05;
     container.appendChild(renderer.domElement);
-
-    const maxAnisotropy = renderer.capabilities.getMaxAnisotropy();
 
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
-    controls.target.set(20, 10, 0);
     controls.maxPolarAngle = Math.PI / 2 - 0.02;
+    controls.minDistance = 30;
+    controls.maxDistance = 850;
+    controls.target.set(20, 10, 0);
 
-    // 4. Pedestal & Grid Floor
-    const pedestalGeo = new THREE.BoxGeometry(360, 18, 360);
+    // 4. Subtle Floor Coordinate Grid
+    const floorGrid = new THREE.GridHelper(1200, 48, 0x272733, 0x1a1a24);
+    floorGrid.position.set(20, -10.1, 0);
+    scene.add(floorGrid);
+
+    // 5. Dark Architectural Pedestal Mount
+    const pedestalGeo = new THREE.BoxGeometry(360, 20, 360);
     const pedestalMat = new THREE.MeshStandardMaterial({
-      color: 0x1a1b22,
+      color: 0x16171d,
       roughness: 0.9,
       metalness: 0.1
     });
-    const pedestalMesh = new THREE.Mesh(pedestalGeo, pedestalMat);
-    pedestalMesh.position.set(20, -9.1, 0);
-    scene.add(pedestalMesh);
+    const pedestal = new THREE.Mesh(pedestalGeo, pedestalMat);
+    pedestal.position.set(20, -10, 0);
+    pedestal.receiveShadow = true;
+    scene.add(pedestal);
 
-    const floorGrid = new THREE.GridHelper(1600, 40, 0x272935, 0x181920);
-    floorGrid.position.set(20, -18.2, 0);
-    scene.add(floorGrid);
-
-    // 5. Fixed Cinematic Lighting (No sun button needed)
+    // 6. Cinematic Lighting
     const ambientLight = new THREE.AmbientLight(0xffffff, 1.3);
     scene.add(ambientLight);
 
@@ -505,16 +586,19 @@
     sunLight.castShadow = true;
     scene.add(sunLight);
 
-    // 6. Terrain Mesh
+    // 7. Terrain Mesh & Material
     const textureLoader = new THREE.TextureLoader();
     let depthCanvas = document.createElement("canvas");
     let depthCtx = depthCanvas.getContext("2d");
+    let cachedRgbTex = null;
+    let cachedHeatmapTex = null;
 
     const geometry = new THREE.PlaneGeometry(360, 360, 384, 384);
     const material = new THREE.MeshStandardMaterial({
       roughness: 0.78,
       metalness: 0.15,
-      displacementScale: currentDisplacementScale
+      displacementScale: currentDisplacementScale,
+      wireframe: false
     });
 
     const terrainMesh = new THREE.Mesh(geometry, material);
@@ -523,28 +607,118 @@
     terrainMesh.receiveShadow = true;
     scene.add(terrainMesh);
 
-    const rgbPath = "public/sample_city_rgb.png";
-    const depthPath = "public/sample_city_depth.png";
+    // Function to generate elevation heatmap texture from depth canvas
+    function generateHeatmap(srcCanvas) {
+      const w = srcCanvas.width;
+      const h = srcCanvas.height;
+      if (w === 0 || h === 0) return null;
 
-    textureLoader.load(rgbPath, (rgbTex) => {
-      rgbTex.anisotropy = maxAnisotropy;
-      rgbTex.generateMipmaps = true;
-      material.map = rgbTex;
+      const sCtx = srcCanvas.getContext("2d");
+      const srcData = sCtx.getImageData(0, 0, w, h).data;
+
+      const c = document.createElement("canvas");
+      c.width = w;
+      c.height = h;
+      const ctx = c.getContext("2d");
+      const imgData = ctx.createImageData(w, h);
+      const d = imgData.data;
+
+      for (let i = 0; i < srcData.length; i += 4) {
+        const t = srcData[i] / 255.0; // 0..1 elevation
+        // Smooth Turbo/Viridis-inspired palette
+        let r, g, b;
+        if (t < 0.25) {
+          const k = t / 0.25;
+          r = Math.floor(40 + k * 20);
+          g = Math.floor(20 + k * 80);
+          b = Math.floor(120 + k * 135);
+        } else if (t < 0.5) {
+          const k = (t - 0.25) / 0.25;
+          r = Math.floor(60 + k * 20);
+          g = Math.floor(100 + k * 120);
+          b = Math.floor(255 - k * 155);
+        } else if (t < 0.75) {
+          const k = (t - 0.5) / 0.25;
+          r = Math.floor(80 + k * 160);
+          g = Math.floor(220 + k * 35);
+          b = Math.floor(100 - k * 80);
+        } else {
+          const k = (t - 0.75) / 0.25;
+          r = Math.floor(240 + k * 15);
+          g = Math.floor(255 - k * 150);
+          b = Math.floor(20 + k * 20);
+        }
+        d[i] = r;
+        d[i + 1] = g;
+        d[i + 2] = b;
+        d[i + 3] = 255;
+      }
+      ctx.putImageData(imgData, 0, 0);
+      const tex = new THREE.CanvasTexture(c);
+      tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+      return tex;
+    }
+
+    function applyViewMode(mode) {
+      currentViewMode = mode;
+      document.querySelectorAll(".mode-btn").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.mode === mode);
+      });
+
+      if (mode === "wireframe") {
+        material.wireframe = true;
+        material.map = cachedRgbTex;
+      } else if (mode === "heatmap") {
+        material.wireframe = false;
+        if (!cachedHeatmapTex && depthCanvas.width > 0) {
+          cachedHeatmapTex = generateHeatmap(depthCanvas);
+        }
+        material.map = cachedHeatmapTex || cachedRgbTex;
+      } else { // textured
+        material.wireframe = false;
+        material.map = cachedRgbTex;
+      }
       material.needsUpdate = true;
+    }
+
+    // Set up mode buttons
+    document.querySelectorAll(".mode-btn").forEach(btn => {
+      btn.addEventListener("click", () => applyViewMode(btn.dataset.mode));
     });
 
-    textureLoader.load(depthPath, (depthTex) => {
-      depthTex.anisotropy = maxAnisotropy;
-      material.displacementMap = depthTex;
-      material.needsUpdate = true;
+    // 8. Load Initial Sample Map
+    const initialRgb = "public/sample_city_rgb.png";
+    const initialDepth = "public/sample_city_depth.png";
 
-      const img = depthTex.image;
-      depthCanvas.width = img.width;
-      depthCanvas.height = img.height;
-      depthCtx.drawImage(img, 0, 0);
-    });
+    function loadModelTextures(rgbUrl, depthUrl) {
+      textureLoader.load(rgbUrl, (tex) => {
+        tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+        tex.generateMipmaps = true;
+        cachedRgbTex = tex;
+        if (currentViewMode !== "heatmap") material.map = tex;
+        material.needsUpdate = true;
+      });
 
-    // 7. Single Clean Click Pin Marker (No scattered purple beacon dots)
+      textureLoader.load(depthUrl, (depthTex) => {
+        depthTex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+        material.displacementMap = depthTex;
+        material.needsUpdate = true;
+
+        const img = depthTex.image;
+        depthCanvas.width = img.width;
+        depthCanvas.height = img.height;
+        depthCtx.drawImage(img, 0, 0);
+
+        cachedHeatmapTex = generateHeatmap(depthCanvas);
+        if (currentViewMode === "heatmap") {
+          material.map = cachedHeatmapTex;
+          material.needsUpdate = true;
+        }
+      });
+    }
+    loadModelTextures(initialRgb, initialDepth);
+
+    // 9. Single Clean Click Pin Marker
     const clickPin = new THREE.Mesh(
       new THREE.SphereGeometry(4.5, 32, 32),
       new THREE.MeshStandardMaterial({ color: 0xa855f7, emissive: 0x9333ea, emissiveIntensity: 1.4 })
@@ -552,6 +726,7 @@
     clickPin.visible = false;
     scene.add(clickPin);
 
+    // 10. Click-to-Measure Elevation & Slope (Task T10)
     const callout = document.getElementById("callout-card");
     const raycaster = new THREE.Raycaster();
     const mouse = new THREE.Vector2();
@@ -570,10 +745,33 @@
         const uv = hit.uv;
 
         let pixelVal = 128;
-        if (depthCanvas.width > 0) {
+        let slopeDeg = 0.0;
+
+        if (depthCanvas.width > 0 && depthCanvas.height > 0) {
           const px = Math.floor(uv.x * depthCanvas.width);
           const py = Math.floor((1 - uv.y) * depthCanvas.height);
           pixelVal = depthCtx.getImageData(px, py, 1, 1).data[0];
+
+          // Sample 4-neighbors for slope estimation (Task T10, Item 6)
+          const pxL = Math.max(0, px - 2);
+          const pxR = Math.min(depthCanvas.width - 1, px + 2);
+          const pyU = Math.max(0, py - 2);
+          const pyD = Math.min(depthCanvas.height - 1, py + 2);
+
+          const zL = (depthCtx.getImageData(pxL, py, 1, 1).data[0] / 255.0) * MAX_HEIGHT_RANGE;
+          const zR = (depthCtx.getImageData(pxR, py, 1, 1).data[0] / 255.0) * MAX_HEIGHT_RANGE;
+          const zU = (depthCtx.getImageData(px, pyU, 1, 1).data[0] / 255.0) * MAX_HEIGHT_RANGE;
+          const zD = (depthCtx.getImageData(px, pyD, 1, 1).data[0] / 255.0) * MAX_HEIGHT_RANGE;
+
+          // Spatial pixel resolution (360 mesh units ~ 360 meters)
+          const dx = ((pxR - pxL) * 360.0) / depthCanvas.width;
+          const dy = ((pyD - pyU) * 360.0) / depthCanvas.height;
+
+          const dzdx = dx > 0 ? (zR - zL) / dx : 0.0;
+          const dzdy = dy > 0 ? (zD - zU) / dy : 0.0;
+
+          const gradient = Math.sqrt(dzdx * dzdx + dzdy * dzdy);
+          slopeDeg = Math.min(89.0, (Math.atan(gradient) * 180.0) / Math.PI);
         }
 
         const relDepth = pixelVal / 255.0;
@@ -591,11 +789,12 @@
         callout.style.display = "block";
 
         document.getElementById("callout-title").innerText = `${totalElev.toFixed(1)} m elevation`;
-        document.getElementById("callout-height").innerText = `+${structHeight.toFixed(1)} m structure height`;
+        document.getElementById("callout-height").innerText = `+${structHeight.toFixed(1)} m structure`;
+        document.getElementById("callout-slope").innerHTML = `Slope: <strong>${slopeDeg.toFixed(1)}°</strong>`;
       }
     });
 
-    // 8. Header Controls
+    // 11. Header Controls
     const dispSlider = document.getElementById("disp-slider");
     dispSlider.addEventListener("input", (e) => {
       const val = parseFloat(e.target.value);
@@ -609,7 +808,7 @@
       controls.target.set(20, 10, 0);
     });
 
-    // 9. Fullscreen Toggle Implementation (↗ / ↙)
+    // 12. Fullscreen Toggle Implementation (↗ / ↙)
     const expandBtn = document.getElementById("expand-btn");
     expandBtn.addEventListener("click", () => {
       if (!document.fullscreenElement) {
@@ -633,14 +832,80 @@
       }
     });
 
-    // 10. Responsive Window Resize Handler
+    // 13. Image Upload Integration (Task T8/T10)
+    const fileInput = document.getElementById("file-input");
+    const uploadBtn = document.getElementById("upload-btn");
+    const uploadText = document.getElementById("upload-text");
+
+    uploadBtn.addEventListener("click", () => fileInput.click());
+
+    fileInput.addEventListener("change", async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      uploadText.innerText = "Processing...";
+      uploadBtn.style.opacity = "0.7";
+
+      try {
+        const formData = new FormData();
+        formData.append("file", file);
+
+        // Attempt POST to local FastAPI backend
+        const res = await fetch("http://127.0.0.1:8000/process", {
+          method: "POST",
+          body: formData,
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          console.log("[DepthWizard] Server returned:", data);
+
+          if (data.elevation_stats) {
+            BASE_ELEVATION = data.elevation_stats.base_elevation_m || 50.0;
+            MAX_HEIGHT_RANGE = data.elevation_stats.max_height_range_m || 150.0;
+            document.getElementById("vertical-range-display").innerText =
+              `${BASE_ELEVATION}–${(BASE_ELEVATION + MAX_HEIGHT_RANGE).toFixed(0)}m`;
+            document.getElementById("status-tag").innerText = data.mode || "DSM";
+            document.getElementById("status-tag").style.borderColor = "#8b5cf6";
+            document.getElementById("status-tag").style.color = "#c084fc";
+          }
+
+          loadModelTextures(data.texture_url, data.displacement_url);
+          uploadText.innerText = "Upload Image";
+          uploadBtn.style.opacity = "1";
+          return;
+        }
+      } catch (err) {
+        console.warn("FastAPI backend not reachable, falling back to local preview:", err);
+      }
+
+      // Standalone Fallback: load image into texture directly
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        const img = new Image();
+        img.onload = () => {
+          const newTex = new THREE.Texture(img);
+          newTex.needsUpdate = true;
+          newTex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+          cachedRgbTex = newTex;
+          if (currentViewMode !== "heatmap") material.map = newTex;
+          material.needsUpdate = true;
+          uploadText.innerText = "Upload Image";
+          uploadBtn.style.opacity = "1";
+        };
+        img.src = ev.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // 14. Responsive Window Resize Handler
     window.addEventListener("resize", () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
     });
 
-    // 11. Animation Loop
+    // 15. Animation Loop
     renderer.setAnimationLoop(() => {
       controls.update();
       renderer.render(scene, camera);
